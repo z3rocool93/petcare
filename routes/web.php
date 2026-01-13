@@ -39,3 +39,18 @@ Route::middleware(['auth'])->group(function () {
     Volt::route('/foro', 'forum.index')->name('forum.index');
     Volt::route('/veterinarias', 'pages.veterinarias')->name('veterinarias.index');
 });
+// Ruta para validación de la APK (Asset Links)
+Route::get('/.well-known/assetlinks.json', function () {
+    return response()->json([
+        [
+            "relation" => ["delegate_permission/common.handle_all_urls"],
+            "target" => [
+                "namespace" => "android_app",
+                "package_name" => "com.petcare.app", // <--- ASEGÚRATE QUE SEA TU PACKAGE ID
+                "sha256_cert_fingerprints" => [
+                    "TU_FIRMA_SHA256_AQUÍ" // <--- PEGA AQUÍ LA FIRMA QUE ESTÁ EN TU ARCHIVO
+                ]
+            ]
+        ]
+    ]);
+});
