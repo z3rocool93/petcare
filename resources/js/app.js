@@ -1,8 +1,8 @@
 import './bootstrap';
 
-import Alpine from 'alpinejs';
+//import Alpine from 'alpinejs';
 
-window.Alpine = Alpine;
+//window.Alpine = Alpine;
 
 // Iniciamos Alpine.js
-Alpine.start();
+//Alpine.start();
