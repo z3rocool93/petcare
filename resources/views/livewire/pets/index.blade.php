@@ -254,7 +254,7 @@ $deletePet = function (Database $database, $id) use ($fetchPets) {
                     </flux:select>
                     <flux:select wire:model="raza" label="Raza">
                         <option value="">Elegir...</option>
-                        @foreach($breeds as $breed) <option value="{{ ucfirst($breed) }}">{{ ucfirst($breed) }}</option> @endforeach
+                        @foreach($breeds ?? [] as $breed) <option value="{{ ucfirst($breed) }}">{{ ucfirst($breed) }}</option> @endforeach
                     </flux:select>
                 </div>
                 <flux:input wire:model="fecha_nacimiento" type="date" label="Fecha de Nacimiento" />

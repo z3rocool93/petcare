@@ -8,6 +8,9 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
+Volt::route('/membresias', 'pages.membership.index')->name('membership.index');
+Volt::route('/servicios', 'pages.services-info')->name('services.info');
+
 Volt::route('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
@@ -34,7 +37,5 @@ Route::middleware(['auth'])->group(function () {
     Volt::route('mascotas/{id}/historial', 'pets.history')->name('pets.history');
     Volt::route('/consultas', 'consultations.index')->name('consultations');
     Volt::route('/foro', 'forum.index')->name('forum.index');
-    Volt::route('/membresias', 'pages.membership.index')->name('membership.index');
-    Volt::route('/servicios', 'pages.services-info')->name('services.info');
     Volt::route('/veterinarias', 'pages.veterinarias')->name('veterinarias.index');
 });

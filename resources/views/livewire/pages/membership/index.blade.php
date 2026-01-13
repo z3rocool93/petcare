@@ -16,14 +16,21 @@ state([
 mount(function (Database $database) {
     $uid = auth()->id();
 
-    // RF1, RF2, RF3: Cargar configuración de planes
+    // 1. Cargamos los planes (Esto es público, se carga siempre)
     $this->plans = $database->getReference('membership_plans')->getValue() ?? [];
 
-    // RF9: Cargar estado de suscripción actual
-    $this->userSubscription = $database->getReference("user_subscriptions/$uid")->getValue();
+    // 2. Cargamos datos privados SOLO si el usuario está logueado
+    if ($uid) {
+        // Obtenemos la suscripción del usuario
+        $this->userSubscription = $database->getReference("user_subscriptions/$uid")->getValue();
 
-    // RF13: Cargar historial de recibos
-    $this->receipts = $database->getReference("user_receipts/$uid")->getValue() ?? [];
+        // Obtenemos los recibos
+        $this->receipts = $database->getReference("user_receipts/$uid")->getValue() ?? [];
+    } else {
+        // Si no hay sesión, nos aseguramos de que los datos del usuario sean nulos/vacíos
+        $this->userSubscription = null;
+        $this->receipts = [];
+    }
 });
 // ACCIÓN: Ver Detalle de Recibo (RF13)
 $viewReceipt = function ($id) {
@@ -33,6 +40,9 @@ $viewReceipt = function ($id) {
 
 // RF6: Proceso de Suscripción (Simulado para RF12)
 $subscribe = function (Database $database, $planId) {
+    if (!auth()->check()) {
+        return redirect()->route('login');
+    }
     $this->processing = true;
 
     // Simulación de latencia de pasarela de pago (RF12)
@@ -149,20 +159,25 @@ $cancelSubscription = function (Database $database) {
                     @endforeach
                 </ul>
 
-                <button
-                    wire:click="subscribe('{{ $id }}')"
-                    wire:loading.attr="disabled"
-                    @disabled(($userSubscription['plan_id'] ?? '') == $id)
-                    class="w-full py-4 rounded-2xl font-bold text-lg shadow-lg transition transform active:scale-95
-                        {{ ($userSubscription['plan_id'] ?? '') == $id
-                            ? 'bg-zinc-100 text-zinc-400 cursor-not-allowed'
-                            : 'bg-zinc-900 dark:bg-white dark:text-zinc-900 text-white hover:bg-blue-600 hover:text-white' }}"
-                >
-                    <span wire:loading.remove wire:target="subscribe('{{ $id }}')">
-                        {{ ($userSubscription['plan_id'] ?? '') == $id ? 'Plan Actual' : 'Seleccionar Plan' }}
-                    </span>
-                    <span wire:loading wire:target="subscribe('{{ $id }}')">Procesando...</span>
-                </button>
+                    <button
+                        wire:click="subscribe('{{ $id }}')"
+                        wire:loading.attr="disabled"
+                        @disabled(($userSubscription['plan_id'] ?? '') == $id)
+                        class="w-full py-4 rounded-2xl font-bold text-lg shadow-lg transition transform active:scale-95
+                            {{ ($userSubscription['plan_id'] ?? '') == $id
+                                ? 'bg-zinc-100 text-zinc-400 cursor-not-allowed'
+                                : 'bg-zinc-900 dark:bg-white dark:text-zinc-900 text-white hover:bg-blue-600 hover:text-white' }}"
+                    >
+                        <span wire:loading.remove wire:target="subscribe('{{ $id }}')">
+                            @auth
+                                {{ ($userSubscription['plan_id'] ?? '') == $id ? 'Plan Actual' : 'Seleccionar Plan' }}
+                            @endauth
+                            @guest
+                                Iniciar Sesión para Contratar
+                            @endguest
+                        </span>
+                        <span wire:loading wire:target="subscribe('{{ $id }}')">Procesando...</span>
+                    </button>
             </div>
         @endforeach
     </div>
@@ -233,7 +248,7 @@ $cancelSubscription = function (Database $database) {
                     <div class="flex justify-between mb-6">
                         <div>
                             <p class="text-[10px] font-bold text-zinc-400 uppercase">Cliente</p>
-                            <p class="font-bold dark:text-white">{{ auth()->user()->name }}</p>
+                            <p class="font-bold dark:text-white">{{ auth()->user()?->name ?? 'Usuario no identificado' }}</p>
                         </div>
                         <div class="text-right">
                             <p class="text-[10px] font-bold text-zinc-400 uppercase">Fecha</p>
@@ -288,8 +303,8 @@ $cancelSubscription = function (Database $database) {
 
             // Obtenemos los datos del componente Livewire
             const receipt = $wire.selectedReceipt;
-            const userName = "{{ auth()->user()->name }}";
-            const userEmail = "{{ auth()->user()->email }}";
+            const userName = "{{ auth()->user()?->name ?? 'Visitante' }}";
+            const userEmail = "{{ auth()->user()?->email ?? 'Sin correo' }}";
 
             // Estilos y Colores (Consistentes con tu reporte clínico)
             const primaryColor = [37, 99, 235]; // Blue 600
