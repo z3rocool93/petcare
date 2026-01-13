@@ -18,8 +18,6 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
 <head>
     @include('partials.head')
-    <meta name="theme-color" content="#3b82f6">
-    <link rel="manifest" href="{{ asset('manifest.json') }}">
     <link rel="apple-touch-icon" href="{{ asset('img/icons/icon-192x192.png') }}">
     <script>
         // Al cargar la página, aplicamos el tema guardado o el del sistema
