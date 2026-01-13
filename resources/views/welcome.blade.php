@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>PetCare - Gestión Veterinaria Integral</title>
+    <link rel="manifest" href="{{ asset('manifest.json') }}">
+    <meta name="theme-color" content="#3b82f6">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script>
         // Al cargar la página, aplicamos el tema guardado o el del sistema
@@ -137,5 +139,22 @@
 
 <footer class="bg-white dark:bg-gray-800">
 </footer>
+<script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register("{{ asset('sw.js') }}")
+                .then(reg => console.log('PetCare PWA: Service Worker registrado', reg.scope))
+                .catch(err => console.log('PetCare PWA: Error al registrar SW', err));
+        });
+    }
+</script><script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register("{{ asset('sw.js') }}")
+                .then(reg => console.log('PetCare PWA: Service Worker registrado', reg.scope))
+                .catch(err => console.log('PetCare PWA: Error al registrar SW', err));
+        });
+    }
+</script>
 </body>
 </html>
