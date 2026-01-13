@@ -1,0 +1,8 @@
+[{
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+        "namespace": "android_app",
+        "package_name": "com.petcare.app",
+        "sha256_cert_fingerprints": ["D6:0D:D7:36:87:86:2C:AF:E9:1A:23:49:D8:79:89:0F:95:C1:F8:E7:0E:3C:56:C9:53:F1:E9:D0:37:1F:1A:14"]
+    }
+}]
