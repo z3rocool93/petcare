@@ -149,6 +149,10 @@
 {{ $slot }}
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{{-- 1. Motor de Livewire (Indispensable) --}}
+@livewireScripts
+
+{{-- 2. Componentes de Flux --}}
 @fluxScripts
 <script>
     if ('serviceWorker' in navigator) {
