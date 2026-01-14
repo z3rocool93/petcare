@@ -162,21 +162,31 @@ $cancelSubscription = function (Database $database) {
                     <button
                         wire:click="subscribe('{{ $id }}')"
                         wire:loading.attr="disabled"
+                        wire:key="btn-plan-{{ $id }}"
                         @disabled(($userSubscription['plan_id'] ?? '') == $id)
-                        class="w-full py-4 rounded-2xl font-bold text-lg shadow-lg transition transform active:scale-95
+                        class="w-full py-4 rounded-2xl font-bold text-lg shadow-lg transition transform active:scale-95 flex items-center justify-center relative
                             {{ ($userSubscription['plan_id'] ?? '') == $id
                                 ? 'bg-zinc-100 text-zinc-400 cursor-not-allowed'
                                 : 'bg-zinc-900 dark:bg-white dark:text-zinc-900 text-white hover:bg-blue-600 hover:text-white' }}"
                     >
-                        <span wire:loading.remove wire:target="subscribe('{{ $id }}')">
+                        {{-- TEXTO NORMAL: Se oculta forzosamente con la clase 'hidden' cuando algo está cargando --}}
+                        <span wire:loading.class="hidden" wire:target="subscribe">
                             @auth
                                 {{ ($userSubscription['plan_id'] ?? '') == $id ? 'Plan Actual' : 'Seleccionar Plan' }}
                             @endauth
                             @guest
-                                Iniciar Sesión para Contratar
+                                    Iniciar Sesión para Contratar
                             @endguest
                         </span>
-                        <span wire:loading wire:target="subscribe('{{ $id }}')">Procesando...</span>
+
+                        {{-- TEXTO PROCESANDO: Está oculto por defecto ('hidden') y se muestra solo cuando carga --}}
+                        <span class="hidden" wire:loading.class.remove="hidden" wire:loading.class="flex" wire:target="subscribe" class="items-center gap-2">
+                            <svg class="animate-spin h-5 w-5 text-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            <span>Procesando...</span>
+                        </span>
                     </button>
             </div>
         @endforeach

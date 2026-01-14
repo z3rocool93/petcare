@@ -155,13 +155,17 @@ $deletePet = function (Database $database, $id) use ($fetchPets) {
 
     <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
         <div>
+            {{-- Agrega esto temporalmente arriba de tu título "Mis Mascotas" --}}
+            <div class="bg-yellow-100 p-2 text-xs font-mono">
+                Dato en Firebase: "{{ $userSub['plan_id'] ?? 'no hay nada' }}"
+            </div>
             <h2 class="text-3xl font-black text-gray-900 dark:text-white">Mis Mascotas</h2>
         </div>
         <div class="flex w-full md:w-auto gap-3 items-center">
             <div class="text-right hidden sm:block mr-2">
                 <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Capacidad</p>
                 <p class="text-xs font-bold text-gray-600 dark:text-gray-300">
-                    {{ count($this->pets) }} / {{ ($this->userSub['plan_id'] ?? 'basic') === 'vip' ? '∞' : (($this->userSub['plan_key'] ?? 'basic') === 'premium' ? '5' : '3') }}
+                    {{ count($this->pets) }} / {{ ($this->userSub['plan_id'] ?? 'basic') === 'vip' ? '∞' : (($this->userSub['plan_id'] ?? 'basic') === 'premium' ? '5' : '3') }}
                 </p>
             </div>
 
