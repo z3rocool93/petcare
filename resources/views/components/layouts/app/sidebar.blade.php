@@ -155,6 +155,11 @@
 {{-- 2. Componentes de Flux --}}
 @fluxScripts
 <script>
+    document.addEventListener('livewire:navigated', () => {
+        console.log('Navegación completada, scripts listos.');
+    });
+</script>
+<script>
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('/sw.js')
