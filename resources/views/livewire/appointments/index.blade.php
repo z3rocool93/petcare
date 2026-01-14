@@ -208,7 +208,7 @@ $deleteAppointment = function (Database $database, $id) {
                     @endforeach
                 </flux:select>
 
-                <flux:input wire:model.live="date" type="date" label="Fecha"/>
+                <flux:input wire:model.change="date" type="date" label="Fecha" class="cursor-pointer" />
 
                 <div
                     class="bg-blue-50/50 dark:bg-blue-900/10 p-4 rounded-2xl border border-blue-50 dark:border-blue-900/20">
