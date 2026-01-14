@@ -48,7 +48,7 @@ Route::get('/.well-known/assetlinks.json', function () {
                 "namespace" => "android_app",
                 "package_name" => "com.petcare.app", // <--- ASEGÚRATE QUE SEA TU PACKAGE ID
                 "sha256_cert_fingerprints" => [
-                    "TU_FIRMA_SHA256_AQUÍ" // <--- PEGA AQUÍ LA FIRMA QUE ESTÁ EN TU ARCHIVO
+                    "D6:0D:D7:36:87:86:2C:AF:E9:1A:23:49:D8:79:89:0F:95:C1:F8:E7:0E:3C:56:C9:53:F1:E9:D0:37:1F:1A:14" // <--- PEGA AQUÍ LA FIRMA QUE ESTÁ EN TU ARCHIVO
                 ]
             ]
         ]
