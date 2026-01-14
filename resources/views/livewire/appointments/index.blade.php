@@ -251,8 +251,20 @@ $deleteAppointment = function (Database $database, $id) {
                     <flux:button type="button" onclick="document.getElementById('modal-appt').close()" variant="ghost"
                                  class="flex-1">Cerrar
                     </flux:button>
-                    <flux:button type="submit" variant="primary" class="flex-1 !bg-blue-600" :disabled="!$time">Agendar
-                        Ahora
+                    <flux:button
+                        type="submit"
+                        variant="primary"
+                        {{-- Agregamos clases específicas para hover y disabled --}}
+                        class="flex-1 transition-all duration-200
+                            !bg-blue-600 hover:!bg-blue-700 active:scale-[0.98]
+                            disabled:!bg-zinc-200 dark:disabled:!bg-zinc-700
+
+                            !text-white
+                            disabled:!text-zinc-400 dark:disabled:!text-zinc-500
+                            disabled:cursor-not-allowed disabled:shadow-none"
+                        :disabled="!$time"
+                    >
+                        Agendar Ahora
                     </flux:button>
                 </div>
             </form>
