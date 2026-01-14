@@ -16,20 +16,23 @@
         }
     </script>
 </head>
-{{-- Ajuste 1: min-h-screen y flex-col para el sticky footer --}}
 <body class="bg-white dark:bg-gray-900 flex flex-col min-h-screen" x-data="{ mobileMenuOpen: false }">
 
-{{-- Envolvemos el contenido superior en un div que crezca (flex-grow) --}}
 <div class="flex-grow">
     <header>
         <nav class="bg-white border-gray-200 dark:bg-gray-900 border-b">
             <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-                <a href="/" class="flex items-center space-x-3">
-                    <span class="self-center text-2xl font-bold whitespace-nowrap text-blue-600 dark:text-blue-500">PetCare</span>
-                </a>
 
-                {{-- Ajuste 2: Agrupación y alineación a la derecha --}}
-                <div class="flex items-center md:order-2 space-x-1 sm:space-x-3 ml-auto">
+                {{-- 1. IZQUIERDA: Logo (Ancho fijo en escritorio para equilibrar) --}}
+                <div class="flex md:w-1/4">
+                    <a href="/" class="flex items-center space-x-3">
+                        <span class="self-center text-2xl font-bold whitespace-nowrap text-blue-600 dark:text-blue-500">PetCare</span>
+                    </a>
+                </div>
+
+                {{-- 2. DERECHA (Mobile First): Botones de acción --}}
+                {{-- En escritorio md:order-3 y md:w-1/4 para empujar al final --}}
+                <div class="flex items-center space-x-2 md:order-3 md:w-1/4 justify-end">
                     @if (Route::has('login'))
                         @auth
                             <a href="{{ url('/dashboard') }}" class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600">
@@ -40,14 +43,13 @@
                                 Log in
                             </a>
                             @if (Route::has('register'))
-                                <a href="{{ route('register') }}" class="hidden sm:inline-block text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600">
+                                <a href="{{ route('register') }}" class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600">
                                     Registrarse
                                 </a>
                             @endif
                         @endauth
                     @endif
 
-                    {{-- Botón Modo Oscuro --}}
                     <button
                         x-data="{
                                 dark: document.documentElement.classList.contains('dark'),
@@ -66,13 +68,14 @@
                         <svg x-show="dark" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" style="display:none;"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.707.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
                     </button>
 
-                    {{-- Menú Hamburguesa --}}
-                    <button @click="mobileMenuOpen = !mobileMenuOpen" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 bg-gray-50 dark:bg-gray-800 border dark:border-gray-700">
+                    <button @click="mobileMenuOpen = !mobileMenuOpen" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 dark:text-gray-400">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/></svg>
                     </button>
                 </div>
 
-                <div :class="mobileMenuOpen ? 'block' : 'hidden'" class="items-center justify-between w-full md:flex md:w-auto md:order-1">
+                {{-- 3. CENTRO: Enlaces de navegación --}}
+                {{-- md:order-2 y flex-grow para ocupar el centro --}}
+                <div :class="mobileMenuOpen ? 'block' : 'hidden'" class="items-center justify-between w-full md:flex md:w-auto md:order-2 flex-1 md:justify-center">
                     <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
                         <li><a href="#" class="block py-2 px-3 text-blue-700 md:dark:text-blue-500">Inicio</a></li>
                         <li><a href="{{ route('pets.index') }}" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white">Mascotas</a></li>
@@ -83,7 +86,7 @@
             </div>
         </nav>
 
-        <section class="bg-white dark:bg-gray-900 pt-12 pb-8 lg:pt-32">
+        <section class="bg-white dark:bg-gray-900 pt-24 pb-8 lg:pt-32">
             <div class="grid max-w-screen-xl px-4 py-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12">
                 <div class="mr-auto place-self-center lg:col-span-7">
                     <h1 class="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl dark:text-white">
@@ -114,9 +117,9 @@
     <main></main>
 </div>
 
-{{-- Footer Ajustado: Siempre al final --}}
-<footer class="bg-gray-50 dark:bg-gray-800 border-t dark:border-gray-700 mt-auto">
-    <div class="mx-auto max-w-screen-xl p-6 text-center">
+{{-- Footer Sticky con diseño original --}}
+<footer class="bg-white dark:bg-gray-900 border-t dark:border-gray-800 mt-auto">
+    <div class="mx-auto max-w-screen-xl p-8 text-center">
         <span class="text-sm text-gray-500 dark:text-gray-400">© 2026 PetCare™. Todos los derechos reservados.</span>
     </div>
 </footer>
