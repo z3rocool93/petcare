@@ -16,7 +16,7 @@ state([
     'editingPetId' => null,
     'viewingPet' => null,
 
-    // Formulario (Sincronizado con wire:model)
+    // Formulario
     'nombre' => '',
     'especie' => '',
     'raza' => '',
@@ -24,15 +24,12 @@ state([
     'notas' => ''
 ]);
 
-// Helper: Cargar datos de Firebase
 $fetchPets = function (Database $database) {
     return $database->getReference('users/' . auth()->id() . '/pets')->getValue() ?? [];
 };
 
 mount(function (Database $database) use ($fetchPets) {
     $this->pets = $fetchPets($database);
-
-    // RF9: Cargar suscripción desde Firebase
     $uid = auth()->id();
     $this->userSub = $database->getReference("user_subscriptions/$uid")->getValue();
 
@@ -42,7 +39,6 @@ mount(function (Database $database) use ($fetchPets) {
     }
 });
 
-// RF10: Función para verificar si puede agregar más mascotas
 $checkLimit = function() {
     $planId = $this->userSub['plan_id'] ?? 'basic';
     $currentCount = count($this->pets);
@@ -50,13 +46,12 @@ $checkLimit = function() {
     $limits = [
         'basic' => 3,
         'premium' => 5,
-        'vip' => 999 // Representa ilimitado
+        'vip' => 999
     ];
 
     $maxAllowed = $limits[$planId] ?? 3;
 
     if ($currentCount >= $maxAllowed) {
-        // RF11: Notificación de funcionalidad no incluida con SweetAlert2
         $this->js("Swal.fire({
             title: 'Límite alcanzado',
             text: 'Tu plan ' + '" . ucfirst($planId) . "' + ' permite un máximo de ' + $maxAllowed + ' mascotas.',
@@ -74,7 +69,6 @@ $checkLimit = function() {
     return true;
 };
 
-// Acción para abrir el modal solo si pasa el filtro (RF10)
 $openCreateModal = function() {
     if ($this->checkLimit()) {
         $this->reset(['nombre', 'especie', 'raza', 'fecha_nacimiento', 'notas', 'editingPetId', 'breeds']);
@@ -82,14 +76,12 @@ $openCreateModal = function() {
     }
 };
 
-// Propiedad Computada: Buscador
 $filteredPets = computed(function () {
     return collect($this->pets)
         ->filter(fn($pet) => empty($this->search) || str_contains(strtolower($pet['Nombre'] ?? ''), strtolower($this->search)))
         ->toArray();
 });
 
-// Reactividad de Especie -> Raza
 $updatedEspecie = function () {
     $this->raza = '';
     if ($this->especie === 'Perro') {
@@ -99,19 +91,17 @@ $updatedEspecie = function () {
     } else { $this->breeds = []; }
 };
 
-// ACCIÓN: Ver Ficha
 $viewPet = function ($id) {
     $this->viewingPet = $this->pets[$id];
     $this->dispatch('open-modal-view');
 };
 
-// ACCIÓN: Preparar Edición
 $editPet = function ($id) {
     $pet = $this->pets[$id];
     $this->editingPetId = $id;
     $this->nombre = $pet['Nombre'];
     $this->especie = $pet['Especie'];
-    $this->updatedEspecie(); // Cargar razas correspondientes
+    $this->updatedEspecie();
     $this->raza = $pet['Raza'] ?? '';
     $this->fecha_nacimiento = $pet['Fecha_nacimiento'];
     $this->notas = $pet['Notas_generales'] ?? '';
@@ -119,12 +109,8 @@ $editPet = function ($id) {
     $this->dispatch('open-modal-form');
 };
 
-// ACCIÓN: Guardar (Crear o Actualizar)
 $save = function (Database $database) use ($fetchPets) {
-    // Si es una creación nueva, re-validamos el límite por seguridad
-    if (!$this->editingPetId && !$this->checkLimit()) {
-        return;
-    }
+    if (!$this->editingPetId && !$this->checkLimit()) return;
 
     $this->validate([
         'nombre' => 'required|min:2',
@@ -172,7 +158,6 @@ $deletePet = function (Database $database, $id) use ($fetchPets) {
             <h2 class="text-3xl font-black text-gray-900 dark:text-white">Mis Mascotas</h2>
         </div>
         <div class="flex w-full md:w-auto gap-3 items-center">
-            {{-- Contador Visual (RF9) --}}
             <div class="text-right hidden sm:block mr-2">
                 <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Capacidad</p>
                 <p class="text-xs font-bold text-gray-600 dark:text-gray-300">
@@ -182,7 +167,7 @@ $deletePet = function (Database $database, $id) use ($fetchPets) {
 
             <input wire:model.live="search" type="text" placeholder="Buscar..." class="rounded-xl border-gray-200 dark:bg-gray-800 dark:text-white flex-grow">
 
-            {{-- Botón con validación de Livewire --}}
+            {{-- Volvemos a wire:click para que checkLimit() funcione --}}
             <button wire:click="openCreateModal" class="bg-blue-600 text-white px-6 py-2 rounded-xl font-bold shadow-lg hover:bg-blue-700 transition">
                 + Nueva Mascota
             </button>
@@ -191,10 +176,7 @@ $deletePet = function (Database $database, $id) use ($fetchPets) {
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         @forelse($this->filteredPets as $id => $pet)
-            <div wire:key="pet-{{ $id }}"
-                 wire:loading.remove wire:target="deletePet('{{ $id }}')"
-                 class="bg-white dark:bg-gray-800 rounded-3xl p-5 border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-xl transition-all relative group">
-
+            <div wire:key="pet-{{ $id }}" class="bg-white dark:bg-gray-800 rounded-3xl p-5 border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-xl transition-all relative">
                 <div class="flex flex-col items-center text-center">
                     <div class="w-20 h-20 rounded-2xl bg-gray-50 dark:bg-gray-700 flex items-center justify-center text-4xl mb-4">
                         {{ $pet['Especie'] === 'Perro' ? '🐶' : ($pet['Especie'] === 'Gato' ? '🐱' : '🐾') }}
@@ -210,22 +192,15 @@ $deletePet = function (Database $database, $id) use ($fetchPets) {
                         Ver Ficha
                     </button>
 
-                    <a href="{{ route('pets.history', $id) }}" wire:navigate
-                       class="p-2 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-xl hover:bg-blue-100 transition shadow-sm"
-                       title="Ver Historial Médico">
+                    <a href="{{ route('pets.history', $id) }}" wire:navigate class="p-2 bg-blue-50 dark:bg-blue-900/30 text-blue-600 rounded-xl">
                         <flux:icon.clipboard-document-list variant="micro" />
                     </a>
 
-                    <button wire:click="editPet('{{ $id }}')" class="p-2 bg-gray-100 dark:bg-gray-700 rounded-xl hover:bg-blue-100 transition">
-                        ✏️
-                    </button>
-
-                    <button @click="confirmingDelete = '{{ $id }}'" class="p-2 bg-gray-100 dark:bg-gray-700 rounded-xl hover:bg-red-100 transition">
-                        🗑️
-                    </button>
+                    <button wire:click="editPet('{{ $id }}')" class="p-2 bg-gray-100 dark:bg-gray-700 rounded-xl">✏️</button>
+                    <button @click="confirmingDelete = '{{ $id }}'" class="p-2 bg-gray-100 dark:bg-gray-700 rounded-xl">🗑️</button>
                 </div>
 
-                <div x-show="confirmingDelete === '{{ $id }}'" class="absolute inset-0 bg-white/95 dark:bg-gray-800/95 rounded-3xl flex flex-col items-center justify-center p-4 z-10">
+                <div x-show="confirmingDelete === '{{ $id }}'" class="absolute inset-0 bg-white/95 dark:bg-gray-800/95 rounded-3xl flex flex-col items-center justify-center p-4 z-10" x-cloak>
                     <p class="text-sm font-bold mb-3">¿Eliminar a {{ $pet['Nombre'] }}?</p>
                     <div class="flex gap-2">
                         <button @click="confirmingDelete = null" class="px-4 py-1 text-xs bg-gray-200 rounded-lg">No</button>
@@ -238,9 +213,10 @@ $deletePet = function (Database $database, $id) use ($fetchPets) {
         @endforelse
     </div>
 
+    {{-- MODAL FORMULARIO: Ajustado para mayor compatibilidad --}}
     <dialog wire:ignore.self id="modal-pet"
-            x-on:open-modal-form.window="$el.showModal()"
-            x-on:close-modal-form.window="$el.close()"
+            x-on:open-modal-form.window="document.getElementById('modal-pet').showModal()"
+            x-on:close-modal-form.window="document.getElementById('modal-pet').close()"
             class="modal p-0 rounded-3xl shadow-2xl backdrop:bg-gray-900/50">
         <div class="bg-white dark:bg-gray-800 w-full max-w-md p-8">
             <h3 class="text-2xl font-bold mb-6 dark:text-white">{{ $editingPetId ? 'Editar Mascota' : 'Nueva Mascota' }}</h3>
@@ -267,8 +243,9 @@ $deletePet = function (Database $database, $id) use ($fetchPets) {
         </div>
     </dialog>
 
+    {{-- MODAL VISTA: Ajustado para mayor compatibilidad --}}
     <dialog wire:ignore.self id="modal-view"
-            x-on:open-modal-view.window="$el.showModal()"
+            x-on:open-modal-view.window="document.getElementById('modal-view').showModal()"
             class="modal p-0 rounded-3xl shadow-2xl backdrop:bg-gray-900/50">
         @if($viewingPet)
             <div class="bg-white dark:bg-gray-800 w-full max-w-sm p-8 text-center">
@@ -281,26 +258,18 @@ $deletePet = function (Database $database, $id) use ($fetchPets) {
                         <span class="text-gray-500 text-sm font-medium">Cumpleaños</span>
                         <span class="font-bold dark:text-gray-200">{{ Carbon::parse($viewingPet['Fecha_nacimiento'])->format('d/m/Y') }}</span>
                     </div>
-                    <div class="flex justify-between border-t border-gray-100 dark:border-gray-600 pt-2">
+                    <div class="flex justify-between border-t border-gray-100 pt-2">
                         <span class="text-gray-500 text-sm font-medium">Edad</span>
                         <span class="font-bold dark:text-gray-200">{{ Carbon::parse($viewingPet['Fecha_nacimiento'])->age }} años</span>
                     </div>
-                    @if(!empty($viewingPet['Notas_generales']))
-                        <div class="border-t border-gray-100 dark:border-gray-600 pt-2">
-                            <span class="text-gray-500 text-sm font-medium block mb-1">Notas</span>
-                            <p class="text-sm text-gray-700 dark:text-gray-300 italic">"{{ $viewingPet['Notas_generales'] }}"</p>
-                        </div>
-                    @endif
                 </div>
-
                 <flux:button onclick="document.getElementById('modal-view').close()" class="w-full">Cerrar Ficha</flux:button>
             </div>
         @endif
     </dialog>
 
     <div x-data="{ show: false, message: '' }" x-on:notify.window="show = true; message = $event.detail; setTimeout(() => show = false, 3000)"
-         x-show="show" class="fixed bottom-5 right-5 bg-gray-900 text-white px-6 py-3 rounded-2xl shadow-2xl z-50">
+         x-show="show" class="fixed bottom-5 right-5 bg-gray-900 text-white px-6 py-3 rounded-2xl shadow-2xl z-50" x-cloak>
         <span x-text="message"></span>
     </div>
-
 </div>

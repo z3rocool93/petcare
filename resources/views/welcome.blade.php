@@ -45,9 +45,16 @@
                 <div class="flex w-1/2 md:w-1/3 items-center justify-end space-x-2">
                     @if (Route::has('login'))
                         @auth
-                            <a href="{{ url('/dashboard') }}" class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600">Panel</a>
+                            <a href="{{ url('/dashboard') }}" class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600">Mi Dashboard</a>
+
+                            <form method="POST" action="{{ route('logout') }}" class="inline">
+                                @csrf
+                                <button type="submit" class="text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 font-medium rounded-lg text-sm px-4 py-2 transition-all">
+                                    Salir
+                                </button>
+                            </form>
                         @else
-                            <a href="{{ route('login') }}" class="text-gray-800 dark:text-white hover:bg-gray-50 font-medium rounded-lg text-sm px-3 py-2 transition">Log in</a>
+                            <a href="{{ route('login') }}" class="text-gray-800 dark:text-white hover:bg-gray-50 font-medium rounded-lg text-sm px-3 py-2 transition">Iniciar Sesión</a>
                             @if (Route::has('register'))
                                 <a href="{{ route('register') }}" class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 transition">Registrarse</a>
                             @endif

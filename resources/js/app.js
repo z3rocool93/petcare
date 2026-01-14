@@ -1,9 +1,7 @@
 import './bootstrap';
 import 'flowbite';
 
-import Alpine from 'alpinejs';
-
-window.Alpine = Alpine;
-
-//Iniciamos Alpine.js
-Alpine.start();
+document.addEventListener('livewire:init', () => {
+    // Si necesitas registrar algo global en Alpine, se hace aquí.
+    console.log('Livewire y Alpine inicializados correctamente.');
+});
