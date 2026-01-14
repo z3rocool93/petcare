@@ -45,6 +45,15 @@ mount(function (Database $database) {
     $this->myPets = $database->getReference("users/$uid/pets")->getValue() ?? [];
 });
 
+// Se ejecuta cada vez que 'date' cambia
+$updatedDate = function ($value) {
+    $this->validateOnly('date', [
+        'date' => 'required|date|after_or_equal:today'
+    ], [
+        'date.after_or_equal' => 'No puedes agendar citas en fechas pasadas.'
+    ]);
+};
+
 // PROPIEDAD COMPUTADA: Slots disponibles basados en el horario del médico elegido
 $availableSlots = computed(function () {
     if (!$this->vet_id || !$this->date) return [];
@@ -208,7 +217,7 @@ $deleteAppointment = function (Database $database, $id) {
                     @endforeach
                 </flux:select>
 
-                <flux:input wire:model.change="date" type="date" label="Fecha" class="cursor-pointer" />
+                <flux:input wire:model.change="date" type="date" label="Fecha" min="{{ date('Y-m-d') }}" class="cursor-pointer" />
 
                 <div
                     class="bg-blue-50/50 dark:bg-blue-900/10 p-4 rounded-2xl border border-blue-50 dark:border-blue-900/20">
