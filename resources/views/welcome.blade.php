@@ -16,32 +16,33 @@
         }
     </script>
 </head>
-{{-- Body con Sticky Footer --}}
 <body class="bg-white dark:bg-gray-900 flex flex-col min-h-screen" x-data="{ mobileMenuOpen: false }">
 
 <div class="flex-grow">
     <header>
         <nav class="bg-white border-gray-200 dark:bg-gray-900 border-b">
-            <div class="max-w-screen-xl mx-auto p-4 flex items-center">
-                {{-- 1. LADO IZQUIERDO: Logo (Ocupa 1/4 del ancho) --}}
-                <div class="flex flex-1 justify-start">
+            <div class="max-w-screen-xl mx-auto p-4 flex items-center justify-between">
+
+                {{-- 1. IZQUIERDA: Logo (Ocupa 1/3 del espacio) --}}
+                <div class="flex w-1/3 justify-start">
                     <a href="/" class="flex items-center space-x-3">
                         <span class="self-center text-2xl font-bold whitespace-nowrap text-blue-600 dark:text-blue-500">PetCare</span>
                     </a>
                 </div>
 
-                {{-- 2. CENTRO: Menú de Navegación (Centrado absoluto en escritorio) --}}
-                <div class="hidden md:flex flex-none justify-center">
-                    <ul class="flex space-x-8 font-medium">
-                        <li><a href="#" class="text-blue-700 dark:text-blue-500">Inicio</a></li>
+                {{-- 2. CENTRO: Menú (Ocupa 1/3 del espacio y centra su contenido) --}}
+                <div class="hidden md:flex w-1/3 justify-center">
+                    {{-- USAMOS FLEX Y GAP-X-8 AQUÍ PARA LA SEPARACIÓN --}}
+                    <ul class="flex flex-row items-center gap-x-8 font-medium">
+                        <li><a href="#" class="text-blue-700 dark:text-blue-500 hover:text-blue-800 transition">Inicio</a></li>
                         <li><a href="{{ route('pets.index') }}" class="text-gray-900 dark:text-white hover:text-blue-700 transition">Mascotas</a></li>
                         <li><a href="{{ route('forum.index') }}" class="text-gray-900 dark:text-white hover:text-blue-700 transition">Foro</a></li>
                         <li><a href="{{ route('membership.index') }}" class="text-gray-900 dark:text-white hover:text-blue-700 transition">Planes</a></li>
                     </ul>
                 </div>
 
-                {{-- 3. LADO DERECHO: Botones y Toggles (Ocupa 1/4 del ancho) --}}
-                <div class="flex flex-1 items-center justify-end space-x-2 sm:space-x-3">
+                {{-- 3. DERECHA: Botones (Ocupa 1/3 del espacio y alinea al final) --}}
+                <div class="flex w-1/2 md:w-1/3 items-center justify-end space-x-2">
                     @if (Route::has('login'))
                         @auth
                             <a href="{{ url('/dashboard') }}" class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600">Panel</a>
@@ -53,7 +54,7 @@
                         @endauth
                     @endif
 
-                    {{-- Toggle de Tema --}}
+                    {{-- Toggle Dark Mode --}}
                     <button
                         x-data="{
                                 dark: document.documentElement.classList.contains('dark'),
@@ -72,14 +73,14 @@
                         <svg x-show="dark" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" style="display:none;"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.707.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
                     </button>
 
-                    {{-- Menú Hamburguesa --}}
+                    {{-- Hamburguesa (Solo Mobile) --}}
                     <button @click="mobileMenuOpen = !mobileMenuOpen" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 dark:text-gray-400">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/></svg>
                     </button>
                 </div>
             </div>
 
-            {{-- Menú Mobile Desplegable --}}
+            {{-- Menú Mobile --}}
             <div x-show="mobileMenuOpen" x-transition class="md:hidden bg-gray-50 dark:bg-gray-800 border-b dark:border-gray-700">
                 <ul class="flex flex-col p-4 space-y-2">
                     <li><a href="#" class="block py-2 px-3 text-blue-700">Inicio</a></li>
@@ -90,7 +91,6 @@
             </div>
         </nav>
 
-        {{-- Hero Section --}}
         <section class="bg-white dark:bg-gray-900 pt-24 pb-8 lg:pt-32">
             <div class="grid max-w-screen-xl px-4 py-8 mx-auto lg:gap-8 lg:py-16 lg:grid-cols-12">
                 <div class="mr-auto place-self-center lg:col-span-7">
@@ -101,10 +101,7 @@
                         Gestiona historiales médicos, agenda citas con profesionales y únete a la comunidad de cuidado animal más grande de Temuco.
                     </p>
                     <div class="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
-                        <a href="/register" class="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800">
-                            Comenzar ahora
-                            <svg class="w-5 h-5 ml-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                        </a>
+                        <a href="/register" class="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800">Comenzar ahora</a>
                         <a href="{{ route('services.info') }}" class="bg-zinc-100 text-zinc-900 px-6 py-3 rounded-2xl font-bold hover:bg-zinc-200 transition text-center">Ver servicios</a>
                     </div>
                 </div>
@@ -116,7 +113,6 @@
     </header>
 </div>
 
-{{-- Footer Centrado y Sticky --}}
 <footer class="bg-white dark:bg-gray-900 border-t dark:border-gray-800">
     <div class="mx-auto max-w-screen-xl p-8 text-center">
         <span class="text-sm text-gray-500 dark:text-gray-400">© 2026 PetCare™. Todos los derechos reservados.</span>
