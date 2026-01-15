@@ -56,10 +56,11 @@ $subscribe = function (Database $database, $planId) {
         'plan_id' => $planId,
         'plan_name' => $plan['name'],
         'status' => 'active',
-        'price' => $plan['price'],
+        'price' => (int) $plan['price'], // Usamos el precio dinámico
+        'limit_pets' => (int) ($plan['limit_pets'] ?? 3), // RF2: Guardamos el límite actual
         'start_date' => now()->toDateTimeString(),
-        'end_date' => now()->addMonth()->toDateTimeString(), // RF3: Vigencia mensual
-        'auto_renew' => true, // RF14: Renovación automática por defecto
+        'end_date' => now()->addMonth()->toDateTimeString(),
+        'auto_renew' => true,
     ];
 
     // RF13: Crear el objeto del Recibo/Factura
@@ -107,6 +108,16 @@ $cancelSubscription = function (Database $database) {
         <h1 class="text-4xl font-black text-zinc-900 dark:text-white tracking-tight">Membresías <span class="text-blue-600">PetCare</span></h1>
         <p class="text-zinc-500 mt-2">Gestiona tus beneficios y servicios exclusivos para tus mascotas</p>
     </div>
+    {{-- Botón Flotante de Gestión (Solo para Admins) --}}
+    @if(auth()->user()?->isAdmin())
+        <a href="{{ route('admin.membership') }}"
+           wire:navigate
+           class="absolute right-20 top-15 hidden md:flex items-center gap-2 bg-zinc-900 dark:bg-zinc-800 text-white px-4 py-2 rounded-xl border border-zinc-800 shadow-lg text-xs font-bold uppercase transition hover:bg-blue-600"
+        >
+            <flux:icon.cog-6-tooth variant="micro" />
+            Gestionar Planes
+        </a>
+    @endif
 
     {{-- RF9: Estado Actual de la Suscripción --}}
     @if($userSubscription)
@@ -147,17 +158,39 @@ $cancelSubscription = function (Database $database) {
                     <span class="text-zinc-400 text-sm">/ mes</span>
                 </div>
 
-                {{-- RF2: Servicios y Funcionalidades --}}
-                <ul class="space-y-4 mb-10 flex-1">
-                    @foreach($plan['features'] as $feature)
-                        <li class="flex items-start gap-3 text-zinc-600 dark:text-zinc-400 text-sm leading-tight">
-                            <div class="mt-0.5 h-5 w-5 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0">
-                                <svg class="h-3 w-3 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                    {{-- RF2: Servicios y Funcionalidades Dinámicas --}}
+                    <ul class="space-y-4 mb-10 flex-1">
+                        {{-- 1. Característica Dinámica: Límite de Mascotas --}}
+                        <li class="flex items-start gap-3 text-zinc-600 dark:text-zinc-400 text-sm leading-tight font-bold">
+                            <div class="mt-0.5 h-5 w-5 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0">
+                                <svg class="h-3 w-3 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
                             </div>
-                            {{ $feature }}
+                            <span>
+                                @if(($plan['limit_pets'] ?? 0) >= 99)
+                                    Mascotas ilimitadas 🐾
+                                @else
+                                    Hasta {{ $plan['limit_pets'] ?? 3 }} mascotas registradas
+                                @endif
+                            </span>
                         </li>
-                    @endforeach
-                </ul>
+
+                        {{-- 2. Otras características desde Firebase --}}
+                        @php
+                            // Si features es un string separado por comas, lo convertimos a array
+                            $features = is_array($plan['features']) ? $plan['features'] : explode(',', $plan['features'] ?? '');
+                        @endphp
+
+                        @foreach($features as $feature)
+                            @if(!empty(trim($feature)))
+                                <li class="flex items-start gap-3 text-zinc-600 dark:text-zinc-400 text-sm leading-tight">
+                                    <div class="mt-0.5 h-5 w-5 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0">
+                                        <svg class="h-3 w-3 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                                    </div>
+                                    {{ trim($feature) }}
+                                </li>
+                            @endif
+                        @endforeach
+                    </ul>
 
                     <button
                         wire:click="subscribe('{{ $id }}')"

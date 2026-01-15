@@ -21,7 +21,8 @@ state([
     'especie' => '',
     'raza' => '',
     'fecha_nacimiento' => '',
-    'notas' => ''
+    'notas' => '',
+    'plansConfig' => [],
 ]);
 
 $fetchPets = function (Database $database) {
@@ -32,6 +33,9 @@ mount(function (Database $database) use ($fetchPets) {
     $this->pets = $fetchPets($database);
     $uid = auth()->id();
     $this->userSub = $database->getReference("user_subscriptions/$uid")->getValue();
+
+    // RF2: Cargamos la configuración maestra de planes
+    $this->plansConfig = $database->getReference('membership_plans')->getValue() ?? [];
 
     $response = Http::get('https://dog.ceo/api/breeds/list/all');
     if ($response->successful()) {
@@ -49,7 +53,8 @@ $checkLimit = function() {
         'vip' => 999
     ];
 
-    $maxAllowed = $limits[$planId] ?? 3;
+    // DINÁMICO: Leemos el límite desde lo que el Admin configuró en Firebase
+    $maxAllowed = $this->plansConfig[$planId]['limit_pets'] ?? 3;
 
     if ($currentCount >= $maxAllowed) {
         $this->js("Swal.fire({
@@ -161,7 +166,13 @@ $deletePet = function (Database $database, $id) use ($fetchPets) {
             <div class="text-right hidden sm:block mr-2">
                 <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Capacidad</p>
                 <p class="text-xs font-bold text-gray-600 dark:text-gray-300">
-                    {{ count($this->pets) }} / {{ ($this->userSub['plan_id'] ?? 'basic') === 'vip' ? '∞' : (($this->userSub['plan_id'] ?? 'basic') === 'premium' ? '5' : '3') }}
+                    @php
+                        $pId = $this->userSub['plan_id'] ?? 'basic';
+                        // Buscamos el límite en la configuración cargada
+                        $max = $this->plansConfig[$pId]['limit_pets'] ?? 3;
+                    @endphp
+
+                    {{ count($this->pets) }} / {{ $pId === 'vip' ? '∞' : $max }}
                 </p>
             </div>
 

@@ -38,6 +38,13 @@ Route::middleware(['auth'])->group(function () {
     Volt::route('/consultas', 'consultations.index')->name('consultations');
     Volt::route('/foro', 'forum.index')->name('forum.index');
     Volt::route('/veterinarias', 'pages.veterinarias')->name('veterinarias.index');
+
+    // --- SECCIÓN ADMINISTRATIVA (RF1, RF2, RF3) ---
+    // Agregamos un prefijo 'admin' para mayor orden profesional
+    Route::prefix('admin')->group(function () {
+        Volt::route('/membresias', 'admin.membership-manager')
+            ->name('admin.membership');
+    });
 });
 // Ruta para validación de la APK (Asset Links)
 Route::get('/.well-known/assetlinks.json', function () {
