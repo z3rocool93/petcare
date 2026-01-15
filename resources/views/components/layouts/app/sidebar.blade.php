@@ -46,30 +46,28 @@
                 <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
                     {{ __('Inicio') }}
                 </flux:navlist.item>
-
-                <flux:navlist.item icon="identification" href="/mascotas" :current="request()->is('mascotas*')" wire:navigate>
-                    {{ __('Mis Mascotas') }}
-                </flux:navlist.item>
-
-                <flux:navlist.item icon="chat-bubble-left-right" :href="route('consultations')" :current="request()->routeIs('consultations')" wire:navigate>
-                    {{ __('Consultas Vet') }}
-                </flux:navlist.item>
             @endauth
 
             {{-- RUTAS PÚBLICAS (Siempre visibles) --}}
+            <flux:navlist.item icon="map-pin" href="{{ route('veterinarias.index') }}" :current="request()->routeIs('veterinarias.index')" wire:navigate>
+                Veterinarias
+            </flux:navlist.item>
             <flux:navlist.item icon="credit-card" :href="route('membership.index')" :current="request()->routeIs('membership.index')" wire:navigate>
                 {{ __('Planes') }}
             </flux:navlist.item>
 
-            <flux:navlist.item icon="map-pin" href="{{ route('veterinarias.index') }}" :current="request()->routeIs('veterinarias.index')" wire:navigate>
-                Veterinarias
-            </flux:navlist.item>
         </flux:navlist.group>
 
         @auth
             <flux:navlist.group :heading="__('Gestión')" class="grid mt-4">
+                <flux:navlist.item icon="identification" href="/mascotas" :current="request()->is('mascotas*')" wire:navigate>
+                    {{ __('Mis Mascotas') }}
+                </flux:navlist.item>
                 <flux:navlist.item icon="calendar" :href="route('appointments.index')" :current="request()->routeIs('appointments.index')" wire:navigate>
                     {{ __('Agenda Médica') }}
+                </flux:navlist.item>
+                <flux:navlist.item icon="chat-bubble-left-right" :href="route('consultations')" :current="request()->routeIs('consultations')" wire:navigate>
+                    {{ __('Consultas Vet') }}
                 </flux:navlist.item>
             </flux:navlist.group>
         @endauth

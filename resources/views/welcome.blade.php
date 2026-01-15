@@ -105,7 +105,7 @@
                         La salud de tu mascota, <span class="text-blue-600">digitalizada y segura.</span>
                     </h1>
                     <p class="max-w-2xl mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl dark:text-gray-400">
-                        Gestiona historiales médicos, agenda citas con profesionales y únete a la comunidad de cuidado animal más grande de Temuco.
+                        Gestiona historiales médicos, agenda citas con profesionales y únete a la comunidad de cuidado animal más grande de Argentina.
                     </p>
                     <div class="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
                         <a href="/register" class="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800">Comenzar ahora</a>
