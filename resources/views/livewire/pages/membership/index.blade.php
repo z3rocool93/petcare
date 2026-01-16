@@ -104,20 +104,26 @@ $cancelSubscription = function (Database $database) {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
     @endassets
     {{-- Encabezado --}}
-    <div class="mb-12 text-center">
-        <h1 class="text-4xl font-black text-zinc-900 dark:text-white tracking-tight">Membresías <span class="text-blue-600">PetCare</span></h1>
-        <p class="text-zinc-500 mt-2">Gestiona tus beneficios y servicios exclusivos para tus mascotas</p>
+    <div class="relative mb-12 flex flex-col items-center">
+        {{-- Bloque de Texto Centrado --}}
+        <div class="text-center">
+            <h1 class="text-4xl font-black text-zinc-900 dark:text-white tracking-tight">
+                Membresías <span class="text-blue-600">PetCare</span>
+            </h1>
+            <p class="text-zinc-500 mt-2">Gestiona tus beneficios y servicios exclusivos para tus mascotas</p>
+        </div>
+
+        {{-- Botón de Gestión Adaptado --}}
+        @if(auth()->user()?->isAdmin())
+            <a href="{{ route('admin.membership') }}"
+               wire:navigate
+               class="mt-6 md:mt-0 md:absolute md:right-0 md:top-0 flex items-center gap-2 bg-zinc-900 dark:bg-zinc-800 text-white px-4 py-2 rounded-xl border border-zinc-800 shadow-lg text-xs font-bold uppercase transition hover:bg-blue-600"
+            >
+                <flux:icon.cog-6-tooth variant="micro" />
+                Gestionar Planes
+            </a>
+        @endif
     </div>
-    {{-- Botón Flotante de Gestión (Solo para Admins) --}}
-    @if(auth()->user()?->isAdmin())
-        <a href="{{ route('admin.membership') }}"
-           wire:navigate
-           class="absolute right-20 top-15 hidden md:flex items-center gap-2 bg-zinc-900 dark:bg-zinc-800 text-white px-4 py-2 rounded-xl border border-zinc-800 shadow-lg text-xs font-bold uppercase transition hover:bg-blue-600"
-        >
-            <flux:icon.cog-6-tooth variant="micro" />
-            Gestionar Planes
-        </a>
-    @endif
 
     {{-- RF9: Estado Actual de la Suscripción --}}
     @if($userSubscription)
