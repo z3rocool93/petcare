@@ -6,7 +6,7 @@ use Livewire\Attributes\Computed;
 new class extends Component {
     public string $busqueda = '';
 
-    // RF3: Usamos una propiedad computada para los datos ficticios
+    // RF3: Lista de veterinarias (Datos para la entrega en UFRO)
     #[Computed]
     public function listaVets()
     {
@@ -63,7 +63,7 @@ new class extends Component {
 >
     <header>
         <h2 class="text-2xl font-black text-zinc-900 dark:text-white uppercase tracking-tight">Veterinarias Cercanas</h2>
-        <p class="text-zinc-500 text-sm italic">Atención ficticia para el proyecto PetCare - Buenos Aires, Argentina.</p>
+        <p class="text-zinc-500 text-sm italic">Atención para el proyecto PetCare - Buenos Aires, Argentina.</p>
     </header>
 
     {{-- Buscador --}}
@@ -74,12 +74,14 @@ new class extends Component {
         class="rounded-2xl shadow-sm"
     />
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[550px]">
+    {{-- Layout Responsivo --}}
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:h-[600px]">
+
         {{-- LISTA DE RESULTADOS (RF3) --}}
-        <div class="lg:col-span-1 space-y-4 overflow-y-auto pr-2 custom-scrollbar">
+        {{-- order-2: En mobile pasa abajo del mapa / h-[400px]: Altura fija en mobile --}}
+        <div class="order-2 lg:order-1 lg:col-span-1 h-[400px] lg:h-full space-y-4 overflow-y-auto pr-2 custom-scrollbar">
             @forelse($this->listaVets as $vet)
                 <div
-                    {{-- Usamos coordenadas directas para evitar pasar el objeto entero y causar el error toJSON --}}
                     x-on:click="centrarEn({{ $vet['lat'] }}, {{ $vet['lng'] }})"
                     class="p-5 bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 rounded-[2rem] hover:border-blue-500 transition-all cursor-pointer group shadow-sm"
                 >
@@ -104,10 +106,13 @@ new class extends Component {
         </div>
 
         {{-- CONTENEDOR DEL MAPA (RF1) --}}
-        <div class="lg:col-span-2 rounded-[2.5rem] overflow-hidden border border-zinc-100 dark:border-zinc-800 shadow-inner" wire:ignore>
+        {{-- order-1: En mobile aparece primero / h-[350px]: Evita que se vea como una franja --}}
+        <div class="order-1 lg:order-2 lg:col-span-2 h-[350px] lg:h-full rounded-[2.5rem] overflow-hidden border border-zinc-100 dark:border-zinc-800 shadow-inner" wire:ignore>
             <div id="map" class="h-full w-full z-0"></div>
         </div>
     </div>
+
+
 
     <script>
         function mapaPetCare() {
@@ -123,16 +128,21 @@ new class extends Component {
                         attribution: '&copy; OpenStreetMap contributors'
                     }).addTo(this.leafletMap);
 
-                    // Cargamos los datos iniciales de forma segura
+                    // Cargamos los datos iniciales
                     this.actualizarMapa(@json($this->listaVets));
+
+                    // AJUSTE CLAVE: Forzamos el redibujado para evitar errores de carga en mobile
+                    setTimeout(() => {
+                        this.leafletMap.invalidateSize();
+                    }, 500);
                 },
 
                 actualizarMapa(vets) {
-                    // Limpiar marcadores
+                    // Limpiar marcadores existentes
                     this.markers.forEach(m => this.leafletMap.removeLayer(m));
                     this.markers = [];
 
-                    // Dibujar nuevos
+                    // Dibujar nuevos marcadores
                     vets.forEach(v => {
                         const marker = L.marker([v.lat, v.lng])
                             .addTo(this.leafletMap)
@@ -140,7 +150,7 @@ new class extends Component {
                         this.markers.push(marker);
                     });
 
-                    // Si filtramos y solo queda uno, vamos hacia él
+                    // Si solo hay un resultado, hacemos foco
                     if (vets.length === 1) {
                         this.centrarEn(vets[0].lat, vets[0].lng);
                     }
@@ -148,6 +158,11 @@ new class extends Component {
 
                 centrarEn(lat, lng) {
                     this.leafletMap.flyTo([lat, lng], 15);
+
+                    // En móviles, hacemos scroll suave hacia arriba para que el usuario vea el movimiento del mapa
+                    if (window.innerWidth < 1024) {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
                 }
             }
         }

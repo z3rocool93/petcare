@@ -270,10 +270,35 @@ $openPost = function ($postId) {
                 </div>
 
                 <div class="flex justify-end gap-2">
-                    <button wire:click="$set('showCreateModal', false)" class="px-4 py-2 text-zinc-500 font-bold">Cancelar</button>
-                    <button wire:click="savePost" wire:loading.attr="disabled" class="bg-blue-600 text-white px-6 py-2 rounded-xl font-bold hover:bg-blue-700 disabled:opacity-50">
-                        <span wire:loading.remove>Publicar</span>
-                        <span wire:loading>Procesando...</span>
+                    {{-- Botón Cancelar --}}
+                    <button wire:click="$set('showCreateModal', false)" class="px-4 py-2 text-zinc-500 font-bold">
+                        Cancelar
+                    </button>
+
+                    {{-- Botón Publicar con Target Específico --}}
+                    <button
+                        wire:click="savePost"
+                        wire:loading.attr="disabled"
+                        wire:target="savePost"
+                        wire:key="btn-publicar-foro" {{-- Agregamos una llave única para evitar conflictos de DOM --}}
+                        class="bg-blue-600 text-white px-6 py-2 rounded-xl font-bold hover:bg-blue-700 disabled:opacity-50 inline-flex items-center justify-center min-w-[120px]"
+                    >
+                        {{-- Estado Normal: Se oculta cuando savePost está cargando --}}
+                        <span wire:loading.class="hidden" wire:target="savePost">
+        Publicar
+    </span>
+
+                        {{-- Estado de Carga: Oculto por defecto con 'hidden' --}}
+                        {{-- Solo se muestra cuando Livewire remueve la clase 'hidden' al ejecutar savePost --}}
+                        <span class="hidden" wire:loading.class.remove="hidden" wire:target="savePost">
+        <div class="flex items-center gap-2">
+            <svg class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <span>Procesando...</span>
+        </div>
+    </span>
                     </button>
                 </div>
             </div>
