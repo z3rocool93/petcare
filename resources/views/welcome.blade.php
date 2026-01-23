@@ -24,14 +24,14 @@
             <div class="max-w-screen-xl mx-auto p-4 flex items-center justify-between">
 
                 {{-- 1. IZQUIERDA: Logo (Ocupa 1/3 del espacio) --}}
-                <div class="flex w-1/3 justify-start bg-brand-cream" >
+                <div class="flex w-1/3 justify-start" >
                     <a href="/" class="flex items-center space-x-3">
                         <span class="self-center text-2xl font-bold whitespace-nowrap text-primary-600 dark:text-primary-500">PetCare</span>
                     </a>
                 </div>
 
                 {{-- 2. CENTRO: Menú (Ocupa 1/3 del espacio y centra su contenido) --}}
-                <div class="hidden md:flex w-1/3 justify-center bg-brand-cream">
+                <div class="hidden md:flex w-1/3 justify-center">
                     {{-- USAMOS FLEX Y GAP-X-8 AQUÍ PARA LA SEPARACIÓN --}}
                     <ul class="flex flex-row items-center gap-x-8 font-medium">
                         <li><a href="#" class="text-primary-700 dark:text-primary-500 hover:text-primary-800 transition">Inicio</a></li>
