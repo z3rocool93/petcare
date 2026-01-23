@@ -179,7 +179,7 @@ $deletePet = function (Database $database, $id) use ($fetchPets) {
             <input wire:model.live="search" type="text" placeholder="Buscar..." class="rounded-xl border-gray-200 dark:bg-gray-800 dark:text-white flex-grow">
 
             {{-- Volvemos a wire:click para que checkLimit() funcione --}}
-            <button wire:click="openCreateModal" class="bg-blue-600 text-white px-6 py-2 rounded-xl font-bold shadow-lg hover:bg-blue-700 transition">
+            <button wire:click="openCreateModal" class="bg-primary-600 text-white px-6 py-2 rounded-xl font-bold shadow-lg hover:bg-primary-700 transition">
                 + Nueva Mascota
             </button>
         </div>
@@ -192,8 +192,8 @@ $deletePet = function (Database $database, $id) use ($fetchPets) {
                     <div class="w-20 h-20 rounded-2xl bg-gray-50 dark:bg-gray-700 flex items-center justify-center text-4xl mb-4">
                         {{ $pet['Especie'] === 'Perro' ? '🐶' : ($pet['Especie'] === 'Gato' ? '🐱' : '🐾') }}
                     </div>
-                    <h3 class="text-xl font-bold text-gray-900 dark:text-white">{{ $pet['Nombre'] }}</h3>
-                    <span class="text-sm text-blue-600 font-semibold bg-blue-50 dark:bg-blue-900/30 px-3 py-1 rounded-full mt-2">
+                    <h3 class="text-xl font-bold text-secondary dark:text-white">{{ $pet['Nombre'] }}</h3>
+                    <span class="text-sm text-primary-600 font-semibold bg-primary-50 dark:bg-primary-900/30 px-3 py-1 rounded-full mt-2">
                         {{ $pet['Raza'] ?: 'Mestizo' }}
                     </span>
                 </div>
@@ -203,7 +203,7 @@ $deletePet = function (Database $database, $id) use ($fetchPets) {
                         Ver Ficha
                     </button>
 
-                    <a href="{{ route('pets.history', $id) }}" wire:navigate class="p-2 bg-blue-50 dark:bg-blue-900/30 text-blue-600 rounded-xl">
+                    <a href="{{ route('pets.history', $id) }}" wire:navigate class="p-2 bg-primary-50 dark:bg-primary-900/30 text-primary-600 rounded-xl">
                         <flux:icon.clipboard-document-list variant="micro" />
                     </a>
 

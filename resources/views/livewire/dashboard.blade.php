@@ -128,37 +128,37 @@ mount(function (Database $database) {
 
         {{-- ALERTA MAÑANA (RF1) --}}
         @if(count($recordatoriosMañana) > 0)
-            <div class="bg-blue-50 border border-blue-200 p-4 rounded-2xl flex items-center justify-between shadow-sm">
+            <div class="bg-primary-50 border border-primary-200 p-4 rounded-2xl flex items-center justify-between shadow-sm">
                 <div class="flex items-center gap-4">
-                    <div class="bg-blue-600 p-2 rounded-xl text-white">
+                    <div class="bg-primary-600 p-2 rounded-xl text-white">
                         <flux:icon.bell-alert variant="micro" />
                     </div>
                     <div>
-                        <p class="text-blue-800 font-bold text-sm">Recordatorio para mañana</p>
-                        <p class="text-blue-700 text-xs">Tienes {{ count($recordatoriosMañana) }} evento(s) programado(s).</p>
+                        <p class="text-primary-800 font-bold text-sm">Recordatorio para mañana</p>
+                        <p class="text-primary-700 text-xs">Tienes {{ count($recordatoriosMañana) }} evento(s) programado(s).</p>
                     </div>
                 </div>
-                <a href="/agenda" class="text-blue-800 font-bold text-xs underline">Preparar cita</a>
+                <a href="/agenda" class="text-primary-800 font-bold text-xs underline">Preparar cita</a>
             </div>
         @endif
     </div>
 
     {{-- ÚLTIMA ATENCIÓN --}}
     @if($lastAttended)
-        <div class="mb-8 bg-zinc-900 dark:bg-zinc-800 text-white p-6 rounded-[2rem] flex flex-col md:flex-row items-center justify-between shadow-2xl relative overflow-hidden group">
+        <div class="mb-8 bg-secondary dark:bg-zinc-800 text-white p-6 rounded-[2rem] flex flex-col md:flex-row items-center justify-between shadow-2xl relative overflow-hidden group">
             <div class="absolute -right-10 -top-10 text-9xl opacity-10 rotate-12 group-hover:rotate-0 transition-transform">📋</div>
             <div class="flex items-center gap-6 relative z-10">
                 <div class="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center text-3xl backdrop-blur-md border border-white/20">
                     {{ ($lastAttended['pet_species'] ?? '') === 'Gato' ? '🐱' : '🐶' }}
                 </div>
                 <div>
-                    <span class="text-blue-400 text-xs font-black uppercase tracking-widest">Última Atención</span>
+                    <span class="text-primary-400 text-xs font-black uppercase tracking-widest">Última Atención</span>
                     <h3 class="text-2xl font-black">{{ $lastAttended['pet_name'] }}</h3>
                     <p class="text-zinc-400 text-sm">Atendido el {{ Carbon::parse($lastAttended['date'])->translatedFormat('d \d\e F') }}</p>
                 </div>
             </div>
             <div class="mt-6 md:mt-0 relative z-10">
-                <a href="{{ route('pets.history', $lastAttended['pet_id']) }}" wire:navigate class="bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-2xl font-bold transition-all shadow-lg">
+                <a href="{{ route('pets.history', $lastAttended['pet_id']) }}" wire:navigate class="bg-primary-600 hover:bg-primary-500 text-white px-6 py-3 rounded-2xl font-bold transition-all shadow-lg">
                     Ver Historial Completo
                 </a>
             </div>
@@ -187,7 +187,7 @@ mount(function (Database $database) {
             </div>
 
             <div>
-                <h1 class="text-2xl md:text-3xl font-black text-zinc-900 dark:text-white uppercase tracking-tight">
+                <h1 class="text-2xl md:text-3xl font-black text-secondary dark:text-white uppercase tracking-tight">
                     ¡Hola, {{ explode(' ', auth()->user()->name)[0] }}! 👋
                 </h1>
                 <p class="text-zinc-500 dark:text-zinc-400 text-sm md:text-base">Bienvenido de vuelta a PetCare.</p>

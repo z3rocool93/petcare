@@ -206,7 +206,7 @@ $cancelSubscription = function (Database $database) {
                         class="w-full py-4 rounded-2xl font-bold text-lg shadow-lg transition transform active:scale-95 flex items-center justify-center relative
                             {{ ($userSubscription['plan_id'] ?? '') == $id
                                 ? 'bg-zinc-100 text-zinc-400 cursor-not-allowed'
-                                : 'bg-zinc-900 dark:bg-white dark:text-zinc-900 text-white hover:bg-blue-600 hover:text-white' }}"
+                                : 'bg-secondary dark:bg-white dark:text-zinc-900 text-white hover:bg-primary-600 hover:text-white' }}"
                     >
                         {{-- TEXTO NORMAL: Se oculta forzosamente con la clase 'hidden' cuando algo está cargando --}}
                         <span wire:loading.class="hidden" wire:target="subscribe">

@@ -99,11 +99,11 @@ mount(function (Database $database, $id) {
                         <span class="block text-sm font-bold text-zinc-400">{{ Carbon::parse($record['date'])->format('Y') }}</span>
                     </div>
                     <div class="relative flex justify-center">
-                        <div class="z-10 w-4 h-4 rounded-full bg-blue-600 border-4 border-white mt-1"></div>
+                        <div class="z-10 w-4 h-4 rounded-full bg-primary-600 border-4 border-white mt-1"></div>
                     </div>
                     <div class="bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 p-6 rounded-3xl shadow-sm">
-                        <span class="text-[9px] font-black text-blue-600 bg-blue-50 dark:bg-blue-900/30 px-2 py-1 rounded-lg uppercase">{{ $record['reason'] }}</span>
-                        <h3 class="text-lg font-bold text-zinc-900 dark:text-white mt-2">{{ $record['vet_name'] ?? 'Clínica SIVi' }}</h3>
+                        <span class="text-[9px] font-black text-primary-600 bg-primary-50 dark:bg-primary-900/30 px-2 py-1 rounded-lg uppercase">{{ $record['reason'] }}</span>
+                        <h3 class="text-lg font-bold text-secondary dark:text-white mt-2">{{ $record['vet_name'] ?? 'Clínica SIVi' }}</h3>
                         @if(!empty($record['notes']))
                             <p class="mt-4 text-zinc-600 text-xs italic border-l-2 border-zinc-100 dark:border-zinc-800 pl-4">"{{ $record['notes'] }}"</p>
                         @endif
@@ -126,8 +126,8 @@ mount(function (Database $database, $id) {
             const historyData = @json($this->filteredHistory);
 
             // Estilos y Colores
-            const primaryColor = [37, 99, 235]; // Blue 600
-            const textColor = [17, 24, 39]; // Gray 900
+            const primaryColor = [242, 100, 25]; // Primary 600 (#f26419 aprox)
+            const textColor = [19, 44, 51]; // Secondary (#132c33)
 
             // Encabezado
             doc.setFontSize(22);

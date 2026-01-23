@@ -108,10 +108,10 @@ $simularRespuesta = function (Database $database, $id) {
 
     <div class="flex justify-between items-center mb-8">
         <div>
-            <h1 class="text-3xl font-black text-zinc-900 dark:text-white">Consultas Veterinarias</h1>
+            <h1 class="text-3xl font-black text-secondary dark:text-white">Consultas Veterinarias</h1>
             <p class="text-zinc-500">Contacta con nuestro equipo de expertos (RF1)</p>
         </div>
-        <button wire:click="$toggle('showForm')" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl font-bold transition shadow-lg flex items-center gap-2">
+        <button wire:click="$toggle('showForm')" class="bg-primary-600 hover:bg-primary-700 text-white px-5 py-2.5 rounded-xl font-bold transition shadow-lg flex items-center gap-2">
             <span class="text-xl">+</span> Nueva Consulta
         </button>
     </div>
@@ -119,7 +119,7 @@ $simularRespuesta = function (Database $database, $id) {
     {{-- FORMULARIO DE NUEVA CONSULTA (RF1 y RF2) --}}
     @if($showForm)
         <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-6 rounded-3xl shadow-xl mb-10 animate-in fade-in slide-in-from-top-4">
-            <h3 class="text-lg font-bold mb-4 text-zinc-900 dark:text-white">Registrar Consulta (RF2)</h3>
+            <h3 class="text-lg font-bold mb-4 text-secondary dark:text-white">Registrar Consulta (RF2)</h3>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 {{-- Selección de Mascota --}}
@@ -161,7 +161,7 @@ $simularRespuesta = function (Database $database, $id) {
 
             <div class="flex justify-end gap-3">
                 <button wire:click="$toggle('showForm')" class="px-4 py-2 text-zinc-500 hover:text-zinc-700 font-bold">Cancelar</button>
-                <button wire:click="save" class="bg-zinc-900 text-white px-6 py-2 rounded-xl font-bold hover:bg-zinc-800 transition">Enviar Consulta</button>
+                <button wire:click="save" class="bg-secondary text-white px-6 py-2 rounded-xl font-bold hover:bg-primary-600 transition">Enviar Consulta</button>
             </div>
         </div>
     @endif
@@ -182,11 +182,11 @@ $simularRespuesta = function (Database $database, $id) {
 
                 {{-- Cabecera de la Consulta --}}
                 <div class="flex items-center gap-3 mb-4">
-                    <div class="h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
+                    <div class="h-10 w-10 bg-primary-100 rounded-full flex items-center justify-center text-primary-600">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
                     </div>
                     <div>
-                        <h4 class="font-bold text-zinc-900 dark:text-white">{{ $consult['subject'] }}</h4>
+                        <h4 class="font-bold text-secondary dark:text-white">{{ $consult['subject'] }}</h4>
                         <p class="text-xs text-zinc-500">{{ $consult['pet_name'] }} • {{ Carbon::parse($consult['date'])->diffForHumans() }}</p>
                     </div>
                 </div>

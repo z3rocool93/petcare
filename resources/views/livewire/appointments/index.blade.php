@@ -144,15 +144,15 @@ $deleteAppointment = function (Database $database, $id) {
                  class="bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 p-5 rounded-3xl flex items-center justify-between shadow-sm relative overflow-hidden group">
 
                 <div class="flex items-center gap-6">
-                    <div class="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-2xl text-center min-w-[80px]">
+                    <div class="bg-primary-50 dark:bg-primary-900/20 p-3 rounded-2xl text-center min-w-[80px]">
                         <span
-                            class="block text-xs font-bold text-blue-600 uppercase">{{ Carbon::parse($appt['date'])->translatedFormat('M') }}</span>
+                            class="block text-xs font-bold text-primary-600 uppercase">{{ Carbon::parse($appt['date'])->translatedFormat('M') }}</span>
                         <span
-                            class="block text-2xl font-black text-blue-700 dark:text-blue-400">{{ Carbon::parse($appt['date'])->format('d') }}</span>
+                            class="block text-2xl font-black text-primary-700 dark:text-primary-400">{{ Carbon::parse($appt['date'])->format('d') }}</span>
                     </div>
 
                     <div>
-                        <h4 class="font-black text-zinc-900 dark:text-white text-lg leading-tight">{{ $appt['pet_name'] }}</h4>
+                        <h4 class="font-black text-secondary dark:text-white text-lg leading-tight">{{ $appt['pet_name'] }}</h4>
                         <div class="flex items-center gap-3 mt-1">
                             <span
                                 class="text-[10px] font-black uppercase px-2 py-0.5 rounded-md bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-700">
@@ -160,7 +160,7 @@ $deleteAppointment = function (Database $database, $id) {
                             </span>
                             <span class="text-sm text-zinc-500 flex items-center gap-1">🕒 {{ $appt['time'] }}</span>
                             <span
-                                class="text-xs font-bold text-blue-600 bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 rounded-lg border border-blue-100 dark:border-blue-800">
+                                class="text-xs font-bold text-primary-600 bg-primary-50 dark:bg-primary-900/30 px-2 py-0.5 rounded-lg border border-primary-100 dark:border-primary-800">
                                 🩺 {{ $appt['vet_name'] ?? 'General' }}
                             </span>
                         </div>
@@ -220,7 +220,7 @@ $deleteAppointment = function (Database $database, $id) {
                 <flux:input wire:model.change="date" type="date" label="Fecha" min="{{ date('Y-m-d') }}" class="cursor-pointer" />
 
                 <div
-                    class="bg-blue-50/50 dark:bg-blue-900/10 p-4 rounded-2xl border border-blue-50 dark:border-blue-900/20">
+                    class="bg-primary-50/50 dark:bg-primary-900/10 p-4 rounded-2xl border border-primary-50 dark:border-primary-900/20">
                     @if($vet_id && $date)
                         <flux:select wire:model="time" label="Horarios Disponibles para esta fecha">
                             <option value="">Selecciona una hora...</option>
@@ -231,7 +231,7 @@ $deleteAppointment = function (Database $database, $id) {
                             @endforelse
                         </flux:select>
                     @else
-                        <p class="text-xs text-blue-600/70 dark:text-blue-400 text-center font-medium italic">Selecciona
+                        <p class="text-xs text-primary-600/70 dark:text-primary-400 text-center font-medium italic">Selecciona
                             médico y fecha para ver disponibilidad</p>
                     @endif
                 </div>
@@ -256,7 +256,7 @@ $deleteAppointment = function (Database $database, $id) {
                         variant="primary"
                         {{-- Agregamos clases específicas para hover y disabled --}}
                         class="flex-1 transition-all duration-200
-                            !bg-blue-600 hover:!bg-blue-700 active:scale-[0.98]
+                            !bg-primary-600 hover:!bg-primary-700 active:scale-[0.98]
                             disabled:!bg-zinc-200 dark:disabled:!bg-zinc-700
 
                             !text-white

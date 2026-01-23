@@ -20,24 +20,24 @@
 
 <div class="flex-grow">
     <header>
-        <nav class="bg-white border-gray-200 dark:bg-gray-900 border-b">
+        <nav class="bg-brand-cream border-gray-200 dark:bg-gray-900 border-b">
             <div class="max-w-screen-xl mx-auto p-4 flex items-center justify-between">
 
                 {{-- 1. IZQUIERDA: Logo (Ocupa 1/3 del espacio) --}}
-                <div class="flex w-1/3 justify-start">
+                <div class="flex w-1/3 justify-start bg-brand-cream" >
                     <a href="/" class="flex items-center space-x-3">
-                        <span class="self-center text-2xl font-bold whitespace-nowrap text-blue-600 dark:text-blue-500">PetCare</span>
+                        <span class="self-center text-2xl font-bold whitespace-nowrap text-primary-600 dark:text-primary-500">PetCare</span>
                     </a>
                 </div>
 
                 {{-- 2. CENTRO: Menú (Ocupa 1/3 del espacio y centra su contenido) --}}
-                <div class="hidden md:flex w-1/3 justify-center">
+                <div class="hidden md:flex w-1/3 justify-center bg-brand-cream">
                     {{-- USAMOS FLEX Y GAP-X-8 AQUÍ PARA LA SEPARACIÓN --}}
                     <ul class="flex flex-row items-center gap-x-8 font-medium">
-                        <li><a href="#" class="text-blue-700 dark:text-blue-500 hover:text-blue-800 transition">Inicio</a></li>
-                        <li><a href="{{ route('pets.index') }}" class="text-gray-900 dark:text-white hover:text-blue-700 transition">Mascotas</a></li>
-                        <li><a href="{{ route('forum.index') }}" class="text-gray-900 dark:text-white hover:text-blue-700 transition">Foro</a></li>
-                        <li><a href="{{ route('membership.index') }}" class="text-gray-900 dark:text-white hover:text-blue-700 transition">Planes</a></li>
+                        <li><a href="#" class="text-primary-700 dark:text-primary-500 hover:text-primary-800 transition">Inicio</a></li>
+                        <li><a href="{{ route('pets.index') }}" class="text-secondary dark:text-white hover:text-primary-700 transition">Mascotas</a></li>
+                        <li><a href="{{ route('forum.index') }}" class="text-secondary dark:text-white hover:text-primary-700 transition">Foro</a></li>
+                        <li><a href="{{ route('membership.index') }}" class="text-secondary dark:text-white hover:text-primary-700 transition">Planes</a></li>
                     </ul>
                 </div>
 
@@ -45,7 +45,7 @@
                 <div class="flex w-1/2 md:w-1/3 items-center justify-end space-x-2">
                     @if (Route::has('login'))
                         @auth
-                            <a href="{{ url('/dashboard') }}" class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600">Mi Dashboard</a>
+                            <a href="{{ url('/dashboard') }}" class="text-white bg-primary-700 hover:bg-primary-800 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600">Mi Dashboard</a>
 
                             <form method="POST" action="{{ route('logout') }}" class="inline">
                                 @csrf
@@ -54,9 +54,9 @@
                                 </button>
                             </form>
                         @else
-                            <a href="{{ route('login') }}" class="text-gray-800 dark:text-white hover:bg-gray-50 font-medium rounded-lg text-sm px-3 py-2 transition">Iniciar Sesión</a>
+                            <a href="{{ route('login') }}" class="text-secondary dark:text-white hover:bg-gray-50 font-medium rounded-lg text-sm px-3 py-2 transition">Iniciar Sesión</a>
                             @if (Route::has('register'))
-                                <a href="{{ route('register') }}" class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 transition">Registrarse</a>
+                                <a href="{{ route('register') }}" class="text-white bg-primary-700 hover:bg-primary-800 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 transition">Registrarse</a>
                             @endif
                         @endauth
                     @endif
@@ -88,28 +88,28 @@
             </div>
 
             {{-- Menú Mobile --}}
-            <div x-show="mobileMenuOpen" x-transition class="md:hidden bg-gray-50 dark:bg-gray-800 border-b dark:border-gray-700">
+            <div x-show="mobileMenuOpen" x-transition class="md:hidden bg-brand-bone dark:bg-gray-800 border-b dark:border-gray-700">
                 <ul class="flex flex-col p-4 space-y-2">
-                    <li><a href="#" class="block py-2 px-3 text-blue-700">Inicio</a></li>
-                    <li><a href="{{ route('pets.index') }}" class="block py-2 px-3 text-gray-900 dark:text-white">Mascotas</a></li>
-                    <li><a href="{{ route('forum.index') }}" class="block py-2 px-3 text-gray-900 dark:text-white">Foro</a></li>
-                    <li><a href="{{ route('membership.index') }}" class="block py-2 px-3 text-gray-900 dark:text-white">Planes</a></li>
+                    <li><a href="#" class="block py-2 px-3 text-primary-700">Inicio</a></li>
+                    <li><a href="{{ route('pets.index') }}" class="block py-2 px-3 text-secondary dark:text-white">Mascotas</a></li>
+                    <li><a href="{{ route('forum.index') }}" class="block py-2 px-3 text-secondary dark:text-white">Foro</a></li>
+                    <li><a href="{{ route('membership.index') }}" class="block py-2 px-3 text-secondary dark:text-white">Planes</a></li>
                 </ul>
             </div>
         </nav>
 
-        <section class="bg-white dark:bg-gray-900 pt-24 pb-8 lg:pt-32">
+        <section class="bg-brand-cream dark:bg-gray-900 pt-24 pb-8 lg:pt-32">
             <div class="grid max-w-screen-xl px-4 py-8 mx-auto lg:gap-8 lg:py-16 lg:grid-cols-12">
                 <div class="mr-auto place-self-center lg:col-span-7">
-                    <h1 class="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl dark:text-white">
-                        La salud de tu mascota, <span class="text-blue-600">digitalizada y segura.</span>
+                    <h1 class="max-w-2xl mb-4 text-4xl font-bold tracking-tight leading-none md:text-5xl xl:text-6xl text-secondary dark:text-white">
+                        UN ENFOQUE DE BIENESTAR QUE, <span class="text-primary-600">PRIORIZA LAS MASCOTAS.</span>
                     </h1>
                     <p class="max-w-2xl mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl dark:text-gray-400">
                         Gestiona historiales médicos, agenda citas con profesionales y únete a la comunidad de cuidado animal más grande de Argentina.
                     </p>
                     <div class="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
-                        <a href="/register" class="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800">Comenzar ahora</a>
-                        <a href="{{ route('services.info') }}" class="bg-zinc-100 text-zinc-900 px-6 py-3 rounded-2xl font-bold hover:bg-zinc-200 transition text-center">Ver servicios</a>
+                        <a href="/register" class="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-white rounded-lg bg-primary-600 hover:bg-primary-700">Comenzar ahora</a>
+                        <a href="{{ route('services.info') }}" class="bg-brand-bone text-secondary px-6 py-3 rounded-2xl font-bold hover:bg-zinc-200 transition text-center">Ver servicios</a>
                     </div>
                 </div>
                 <div class="hidden lg:mt-0 lg:col-span-5 lg:flex">

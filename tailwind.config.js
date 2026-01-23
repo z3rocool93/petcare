@@ -12,8 +12,31 @@ export default {
     theme: {
         extend: {
             colors: {
-                // Azul profesional sugerido para el sector salud/veterinario
-                primary: {"50":"#eff6ff","100":"#dbeafe","200":"#bfdbfe","300":"#93c5fd","400":"#60a5fa","500":"#3b82f6","600":"#2563eb","700":"#1d4ed8","800":"#1e40af","900":"#1e3a8a","950":"#172554"}
+                // Naranja vibrante de los botones y secciones (Acción)
+                primary: {
+                    "50": "#fff7ed",
+                    "100": "#ffedd5",
+                    "200": "#fed7aa",
+                    "300": "#fdba74",
+                    "400": "#fb923c",
+                    "500": "#f97316",
+                    "600": "#f26419", // COLOR BASE DE LA IMAGEN
+                    "700": "#c2410c",
+                    "800": "#9a3412",
+                    "900": "#7c2d12",
+                    "950": "#431407",
+                },
+                // Verde azulado oscuro para encabezados y fondos oscuros
+                secondary: {
+                    "DEFAULT": "#132c33", // COLOR DE LOS TEXTOS "UN ENFOQUE..."
+                    "light": "#1d414a",
+                    "dark": "#0a191d",
+                },
+                // Fondo crema/hueso para la interfaz general
+                brand: {
+                    "cream": "#f2ede4", // FONDO DEL HERO EN LA IMAGEN
+                    "bone": "#faf9f6",
+                }
             }
         },
     },
