@@ -83,10 +83,10 @@ new class extends Component {
             @forelse($this->listaVets as $vet)
                 <div
                     x-on:click="centrarEn({{ $vet['lat'] }}, {{ $vet['lng'] }})"
-                    class="p-5 bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 rounded-[2rem] hover:border-blue-500 transition-all cursor-pointer group shadow-sm"
+                    class="p-5 bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 rounded-[2rem] hover:border-primary-300 transition-all cursor-pointer group shadow-sm"
                 >
                     <div class="flex justify-between items-start mb-2">
-                        <h4 class="font-black text-zinc-900 dark:text-white uppercase text-sm group-hover:text-blue-600 transition">
+                        <h4 class="font-black text-zinc-900 dark:text-white uppercase text-sm group-hover:text-primary-500 transition">
                             {{ $vet['nombre'] }}
                         </h4>
                     </div>

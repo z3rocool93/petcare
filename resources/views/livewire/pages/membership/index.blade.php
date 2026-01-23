@@ -108,7 +108,7 @@ $cancelSubscription = function (Database $database) {
         {{-- Bloque de Texto Centrado --}}
         <div class="text-center">
             <h1 class="text-4xl font-black text-zinc-900 dark:text-white tracking-tight">
-                Membresías <span class="text-blue-600">PetCare</span>
+                Membresías <span class="text-primary-600">PetCare</span>
             </h1>
             <p class="text-zinc-500 mt-2">Gestiona tus beneficios y servicios exclusivos para tus mascotas</p>
         </div>
@@ -117,7 +117,7 @@ $cancelSubscription = function (Database $database) {
         @if(auth()->user()?->isAdmin())
             <a href="{{ route('admin.membership') }}"
                wire:navigate
-               class="mt-6 md:mt-0 md:absolute md:right-0 md:top-0 flex items-center gap-2 bg-zinc-900 dark:bg-zinc-800 text-white px-4 py-2 rounded-xl border border-zinc-800 shadow-lg text-xs font-bold uppercase transition hover:bg-blue-600"
+               class="mt-6 md:mt-0 md:absolute md:right-0 md:top-0 flex items-center gap-2 bg-zinc-900 dark:bg-zinc-800 text-brand-bone px-4 py-2 rounded-xl border border-primary-700 shadow-lg text-xs font-bold uppercase transition hover:bg-primary-400"
             >
                 <flux:icon.cog-6-tooth variant="micro" />
                 Gestionar Planes
@@ -257,7 +257,7 @@ $cancelSubscription = function (Database $database) {
                             <td class="px-8 py-5 font-bold text-zinc-900 dark:text-zinc-100">${{ number_format($receipt['amount'], 0, ',', '.') }}</td>
                             <td class="px-8 py-5 text-right">
                                 {{-- CAMBIO AQUÍ: Usamos $key en lugar de $id --}}
-                                <button wire:click="viewReceipt('{{ $key }}')" class="text-blue-600 font-bold hover:underline">
+                                <button wire:click="viewReceipt('{{ $key }}')" class="text-primary-600 font-bold hover:underline">
                                     Ver Recibo
                                 </button>
                             </td>

@@ -21,13 +21,13 @@
 
 <div class="flex-grow">
     <header>
-        <nav class="bg-brand-cream border-gray-200 dark:bg-gray-900 border-b">
+        <nav class="bg-primary-400 border-primary-500 dark:bg-gray-900 border-b">
             <div class="max-w-screen-xl mx-auto p-4 flex items-center justify-between">
 
                 {{-- 1. IZQUIERDA: Logo (Ocupa 1/3 del espacio) --}}
                 <div class="flex w-1/3 justify-start" >
                     <a href="/" class="flex items-center space-x-3">
-                        <span class="self-center text-2xl font-bold whitespace-nowrap text-primary-600 dark:text-primary-500">PetCare</span>
+                        <span class="self-center text-2xl font-bold whitespace-nowrap text-primary-800 dark:text-primary-500">PetCare</span>
                     </a>
                 </div>
 
@@ -35,10 +35,10 @@
                 <div class="hidden md:flex w-1/3 justify-center">
                     {{-- USAMOS FLEX Y GAP-X-8 AQUÍ PARA LA SEPARACIÓN --}}
                     <ul class="flex flex-row items-center gap-x-8 font-medium">
-                        <li><a href="#" class="text-primary-700 dark:text-primary-500 hover:text-primary-800 transition">Inicio</a></li>
-                        <li><a href="{{ route('pets.index') }}" class="text-secondary dark:text-white hover:text-primary-700 transition">Mascotas</a></li>
-                        <li><a href="{{ route('forum.index') }}" class="text-secondary dark:text-white hover:text-primary-700 transition">Foro</a></li>
-                        <li><a href="{{ route('membership.index') }}" class="text-secondary dark:text-white hover:text-primary-700 transition">Planes</a></li>
+                        <li><a href="#" class="text-primary-700 dark:text-primary-500 hover:text-primary-600 transition">Inicio</a></li>
+                        <li><a href="{{ route('pets.index') }}" class="text-secondary dark:text-white hover:text-primary-600 transition">Mascotas</a></li>
+                        <li><a href="{{ route('forum.index') }}" class="text-secondary dark:text-white hover:text-primary-600 transition">Foro</a></li>
+                        <li><a href="{{ route('membership.index') }}" class="text-secondary dark:text-white hover:text-primary-600 transition">Planes</a></li>
                     </ul>
                 </div>
 
@@ -55,7 +55,7 @@
                                 </button>
                             </form>
                         @else
-                            <a href="{{ route('login') }}" class="text-secondary dark:text-white hover:bg-gray-50 font-medium rounded-lg text-sm px-3 py-2 transition">Iniciar Sesión</a>
+                            <a href="{{ route('login') }}" class="text-secondary dark:text-white hover:bg-primary-200 font-medium rounded-lg text-sm px-3 py-2 transition">Iniciar Sesión</a>
                             @if (Route::has('register'))
                                 <a href="{{ route('register') }}" class="text-white bg-primary-700 hover:bg-primary-800 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 transition">Registrarse</a>
                             @endif
@@ -89,7 +89,7 @@
             </div>
 
             {{-- Menú Mobile --}}
-            <div x-show="mobileMenuOpen" x-transition class="md:hidden bg-brand-bone dark:bg-gray-800 border-b dark:border-gray-700">
+            <div x-show="mobileMenuOpen" x-transition class="md:hidden bg-primary-400 dark:bg-gray-800 border-b border-primary-500 dark:border-gray-700">
                 <ul class="flex flex-col p-4 space-y-2">
                     <li><a href="#" class="block py-2 px-3 text-primary-700">Inicio</a></li>
                     <li><a href="{{ route('pets.index') }}" class="block py-2 px-3 text-secondary dark:text-white">Mascotas</a></li>
@@ -121,9 +121,9 @@
     </header>
 </div>
 
-<footer class="bg-white dark:bg-gray-900 border-t dark:border-gray-800">
+<footer class="bg-primary-400 dark:bg-gray-900 border-t border-primary-500 dark:border-gray-800">
     <div class="mx-auto max-w-screen-xl p-8 text-center">
-        <span class="text-sm text-gray-500 dark:text-gray-400">© 2026 PetCare™. Todos los derechos reservados.</span>
+        <span class="text-sm text-secondary dark:text-gray-400">© 2026 PetCare™. Todos los derechos reservados.</span>
     </div>
 </footer>
 

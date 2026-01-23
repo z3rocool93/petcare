@@ -35,8 +35,8 @@
     <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
     <a href="{{ route('home') }}" class="flex items-center gap-3 px-2 py-4" wire:navigate>
-        <div class="bg-blue-600 p-1.5 rounded-lg text-white text-xl">🐾</div>
-        <span class="text-xl font-black tracking-tight dark:text-white">Pet<span class="text-blue-600">Care</span></span>
+        <div class="bg-primary-200 p-1.5 rounded-lg text-white text-xl">🐾</div>
+        <span class="text-xl font-black tracking-tight dark:text-white">Pet<span class="text-primary-700">Care</span></span>
     </a>
 
     <flux:navlist variant="outline">
@@ -115,7 +115,7 @@
 </flux:sidebar>
 
 {{-- Mobile User Menu --}}
-<flux:header class="lg:hidden">
+<flux:header class="lg:hidden bg-primary-400 dark:bg-zinc-900 border-b border-primary-500 dark:border-zinc-800">
     <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left" />
     <flux:spacer />
 

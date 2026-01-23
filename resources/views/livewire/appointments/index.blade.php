@@ -133,7 +133,7 @@ $deleteAppointment = function (Database $database, $id) {
             <p class="text-zinc-500">Horarios inteligentes por especialista.</p>
         </div>
         <button onclick="document.getElementById('modal-appt').showModal()"
-                class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-xl font-bold shadow-lg transition-all active:scale-95">
+                class="bg-primary-600 hover:bg-primary-700 text-white px-6 py-2 rounded-xl font-bold shadow-lg transition-all active:scale-95">
             + Agendar Cita
         </button>
     </div>
@@ -146,9 +146,9 @@ $deleteAppointment = function (Database $database, $id) {
                 <div class="flex items-center gap-6">
                     <div class="bg-primary-50 dark:bg-primary-900/20 p-3 rounded-2xl text-center min-w-[80px]">
                         <span
-                            class="block text-xs font-bold text-primary-600 uppercase">{{ Carbon::parse($appt['date'])->translatedFormat('M') }}</span>
+                            class="block text-xs font-bold text-primary-500 uppercase">{{ Carbon::parse($appt['date'])->translatedFormat('M') }}</span>
                         <span
-                            class="block text-2xl font-black text-primary-700 dark:text-primary-400">{{ Carbon::parse($appt['date'])->format('d') }}</span>
+                            class="block text-2xl font-black text-primary-700 dark:text-primary-50">{{ Carbon::parse($appt['date'])->format('d') }}</span>
                     </div>
 
                     <div>

@@ -158,7 +158,7 @@ mount(function (Database $database) {
                 </div>
             </div>
             <div class="mt-6 md:mt-0 relative z-10">
-                <a href="{{ route('pets.history', $lastAttended['pet_id']) }}" wire:navigate class="bg-primary-600 hover:bg-primary-500 text-white px-6 py-3 rounded-2xl font-bold transition-all shadow-lg">
+                <a href="{{ route('pets.history', $lastAttended['pet_id']) }}" wire:navigate class="bg-primary-700 hover:bg-primary-500 text-white px-6 py-3 rounded-2xl font-bold transition-all shadow-lg">
                     Ver Historial Completo
                 </a>
             </div>
@@ -211,7 +211,7 @@ mount(function (Database $database) {
 
     {{-- ESTADÍSTICAS --}}
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-        <div class="bg-blue-600 rounded-3xl p-6 text-white shadow-xl shadow-blue-500/20">
+        <div class="bg-primary-700 rounded-3xl p-6 text-white shadow-xl shadow-blue-500/20">
             <p class="text-blue-100 text-xs font-bold uppercase tracking-wider">Total Mascotas</p>
             <h3 class="text-5xl font-black mt-2">{{ $totalMascotas }}</h3>
             <a href="/mascotas" wire:navigate class="inline-flex items-center mt-6 text-xs font-bold bg-white/20 px-4 py-2 rounded-xl">Gestionar todas →</a>
