@@ -9,14 +9,15 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
     <script>
-        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        // Si no hay tema guardado, usamos 'light' por defecto (ignorando la preferencia del sistema para el primer inicio)
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && false)) {
             document.documentElement.classList.add('dark')
         } else {
             document.documentElement.classList.remove('dark')
         }
     </script>
 </head>
-<body class="bg-white dark:bg-gray-900 flex flex-col min-h-screen" x-data="{ mobileMenuOpen: false }">
+<body class="bg-brand-cream dark:bg-gray-900 flex flex-col min-h-screen" x-data="{ mobileMenuOpen: false }">
 
 <div class="flex-grow">
     <header>

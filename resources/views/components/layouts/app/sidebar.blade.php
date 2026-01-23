@@ -22,15 +22,15 @@
     <meta name="theme-color" content="#3b82f6">
     <link rel="apple-touch-icon" href="{{ asset('img/icons/icon-192x192.png') }}">
     <script>
-        // Al cargar la página, aplicamos el tema guardado o el del sistema
-        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        // Si no hay tema guardado, usamos 'light' por defecto (ignorando la preferencia del sistema para el primer inicio)
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && false)) {
             document.documentElement.classList.add('dark')
         } else {
             document.documentElement.classList.remove('dark')
         }
     </script>
 </head>
-<body class="min-h-screen bg-white dark:bg-zinc-800">
+<body class="min-h-screen bg-brand-bone dark:bg-zinc-800">
 <flux:sidebar sticky stashable class="border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
     <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
