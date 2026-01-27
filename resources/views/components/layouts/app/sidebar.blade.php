@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 @php
-    // RF9: Obtenemos la suscripción solo si el usuario está autenticado
     $userSubscription = null;
     if (auth()->check()) {
         $userSubscription = app(Kreait\Firebase\Contract\Database::class)

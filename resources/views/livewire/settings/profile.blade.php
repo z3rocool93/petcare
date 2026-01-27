@@ -26,7 +26,6 @@ new class extends Component {
         $this->name = $user->name;
         $this->email = $user->email;
 
-        // RF9: Traer el nombre del plan desde Firebase
         $subscription = $database->getReference("user_subscriptions/{$user->id}")->getValue();
         $this->planName = $subscription['plan_name'] ?? 'Básico';
     }
@@ -50,7 +49,6 @@ new class extends Component {
         // Mantenemos la ruta actual por defecto
         $path = $user->profile_photo_path;
 
-        // RF4: Si se subió una foto nueva
         if ($this->photo) {
             // Borramos la anterior si existe
             if ($user->profile_photo_path) {
@@ -96,7 +94,6 @@ new class extends Component {
 
     <x-settings.layout :heading="__('Perfil')" :subheading="__('Actualiza tu información y foto de perfil')">
 
-        {{-- CARD INFORMATIVA (RF9 y RF4) --}}
         <div class="mb-8 p-6 bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 rounded-[2.5rem] shadow-sm flex flex-col md:flex-row items-center gap-8">
             {{-- AVATAR CON PREVIEW --}}
             <div class="relative group">

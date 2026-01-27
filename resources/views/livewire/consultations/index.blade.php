@@ -9,12 +9,11 @@ layout('components.layouts.app');
 state([
     'pets' => [],
     'consultations' => [],
-    // Campos del Formulario (RF2)
     'pet_id' => '',
     'subject' => '',
     'phone' => '',
     'email' => '',
-    'message' => '', // (RF1)
+    'message' => '',
     'showForm' => false
 ]);
 
@@ -22,7 +21,6 @@ mount(function (Database $database) {
     $uid = auth()->id();
     $user = auth()->user(); // Asumiendo que usas el auth de Laravel o Firebase
 
-    // Precargar datos de contacto del usuario (RF2)
     $this->phone = $user->phone ?? '';
     $this->email = $user->email ?? '';
 
@@ -54,7 +52,6 @@ $save = function (Database $database) {
     $uid = auth()->id();
     $petName = $this->pets[$this->pet_id]['Nombre'] ?? 'Mascota';
 
-    // (RF2) Guardamos todos los datos requeridos
     $newConsultation = [
         'user_name' => auth()->user()->name ?? 'Usuario',
         'pet_id' => $this->pet_id,
@@ -63,7 +60,7 @@ $save = function (Database $database) {
         'subject' => $this->subject,
         'email' => $this->email,
         'phone' => $this->phone,
-        'message' => $this->message, // (RF1)
+        'message' => $this->message,
         'status' => 'pending', // Estado inicial
         'response' => null,     // Aún sin respuesta
         'created_at' => time()
@@ -77,7 +74,6 @@ $save = function (Database $database) {
     $this->cargarConsultas($database);
 };
 
-// (RF3 - Simulación) Esta función actúa como el "Veterinario"
 $simularRespuesta = function (Database $database, $id) {
     $uid = auth()->id();
 
@@ -109,17 +105,16 @@ $simularRespuesta = function (Database $database, $id) {
     <div class="flex justify-between items-center mb-8">
         <div>
             <h1 class="text-3xl font-black text-secondary dark:text-white">Consultas Veterinarias</h1>
-            <p class="text-zinc-500">Contacta con nuestro equipo de expertos (RF1)</p>
+            <p class="text-zinc-500">Contacta con nuestro equipo de expertos </p>
         </div>
         <button wire:click="$toggle('showForm')" class="bg-primary-600 hover:bg-primary-700 text-white px-5 py-2.5 rounded-xl font-bold transition shadow-lg flex items-center gap-2">
             <span class="text-xl">+</span> Nueva Consulta
         </button>
     </div>
 
-    {{-- FORMULARIO DE NUEVA CONSULTA (RF1 y RF2) --}}
     @if($showForm)
         <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-6 rounded-3xl shadow-xl mb-10 animate-in fade-in slide-in-from-top-4">
-            <h3 class="text-lg font-bold mb-4 text-secondary dark:text-white">Registrar Consulta (RF2)</h3>
+            <h3 class="text-lg font-bold mb-4 text-secondary dark:text-white">Registrar Consulta </h3>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 {{-- Selección de Mascota --}}
@@ -143,7 +138,6 @@ $simularRespuesta = function (Database $database, $id) {
                         <option value="Urgencia">Urgencia (Consulta rápida)</option>
                     </select>
                 </div>
-                {{-- Datos de Contacto (RF2) --}}
                 <div>
                     <label class="block text-xs font-bold text-zinc-500 uppercase mb-1">Teléfono</label>
                     <input type="text" wire:model="phone" class="w-full bg-zinc-50 dark:bg-zinc-800 border-none rounded-xl p-3 text-sm">
@@ -155,7 +149,7 @@ $simularRespuesta = function (Database $database, $id) {
             </div>
 
             <div class="mb-6">
-                <label class="block text-xs font-bold text-zinc-500 uppercase mb-1">Tu Pregunta (RF1)</label>
+                <label class="block text-xs font-bold text-zinc-500 uppercase mb-1">Tu Pregunta </label>
                 <textarea wire:model="message" rows="4" class="w-full bg-zinc-50 dark:bg-zinc-800 border-none rounded-xl p-3 text-sm" placeholder="Describe detalladamente el problema..."></textarea>
             </div>
 
@@ -166,7 +160,6 @@ $simularRespuesta = function (Database $database, $id) {
         </div>
     @endif
 
-    {{-- LISTADO DE CONSULTAS (RF3) --}}
     <div class="space-y-6">
         @forelse($consultations as $consult)
             <div class="bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 p-6 rounded-3xl shadow-sm relative overflow-hidden group">
@@ -196,7 +189,6 @@ $simularRespuesta = function (Database $database, $id) {
                     <p class="text-sm text-zinc-600 dark:text-zinc-300 italic">"{{ $consult['message'] }}"</p>
                 </div>
 
-                {{-- (RF3) Visualización de Respuesta --}}
                 @if($consult['status'] === 'answered' && isset($consult['response']))
                     <div class="border-t border-zinc-100 dark:border-zinc-800 pt-4 mt-4">
                         <div class="flex items-start gap-3">

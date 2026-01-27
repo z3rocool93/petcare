@@ -62,15 +62,12 @@ $updatePlan = function (Database $database, $planId) {
 
                 {{-- Cambiamos la forma de pasar los datos para que sea más limpia --}}
                 <form wire:submit.prevent="updatePlan('{{ $id }}')" class="space-y-4">
-                    {{-- RF1: Nombre del Nivel --}}
                     <flux:input wire:model="plans.{{ $id }}.name" label="Nombre del Plan" />
 
-                    {{-- RF3: Precio --}}
                     <div class="grid grid-cols-1 gap-2">
                         <flux:input wire:model="plans.{{ $id }}.price" type="number" label="Precio ($)" prefix="CLP" />
                     </div>
 
-                    {{-- RF2: Funcionalidades (Límite de mascotas) --}}
                     <flux:input wire:model="plans.{{ $id }}.limit_pets" type="number" label="Límite de Mascotas" placeholder="Ej: 3, 5, 999" />
 
                     <div class="pt-4">

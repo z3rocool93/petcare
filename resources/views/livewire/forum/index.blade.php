@@ -47,12 +47,10 @@ $filteredPosts = computed(function () {
 });
 
 $savePost = function (Database $database) {
-    // Verificamos si tiene plan (RF10)
     // Si no tiene nada o es 'basic', no puede publicar
     $planKey = $this->userSub['plan_id'] ?? 'basic';
 
     if ($planKey === 'basic') {
-        // Disparamos la notificación de "Funcionalidad no incluida" (RF11)
         $this->js("Swal.fire({
             title: '¡Sube a Premium!',
             text: 'Tu plan actual solo permite leer. Para crear tus propios temas, elige un plan de pago.',
@@ -101,7 +99,6 @@ $savePost = function (Database $database) {
 };
 
 $addComment = function (Database $database) {
-    // REGLA RF10: El plan básico es solo lectura para el foro
     $planKey = $this->userSub['plan_id'] ?? 'basic';
 
     if ($planKey === 'basic') {

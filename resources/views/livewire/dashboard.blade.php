@@ -50,7 +50,6 @@ mount(function (Database $database) {
         ->first();
     $this->lastAttended = $lastRaw ? (array)$lastRaw : null;
 
-    // 4. SIMULACIÓN RENOVACIÓN (RF14/RF15)
     if ($this->userSub && ($this->userSub['auto_renew'] ?? false)) {
         $fechaFin = Carbon::parse($this->userSub['end_date']);
         if (now()->greaterThan($fechaFin)) {
@@ -68,7 +67,6 @@ mount(function (Database $database) {
         }
     }
 
-    // 5. RF1: RECORDATORIOS MAÑANA
     $this->recordatoriosMañana = collect($appts)
         ->filter(fn($item) => ($item['date'] === $mañana) || (($item['due_date'] ?? '') === $mañana))
         ->values()
@@ -86,7 +84,6 @@ mount(function (Database $database) {
         ]);
     }
 
-    // 6. RF16: DÍAS PARA VENCER
     if ($this->userSub && isset($this->userSub['end_date'])) {
         $this->diasParaVencer = (int)now()->diffInDays(Carbon::parse($this->userSub['end_date']), false);
     }
@@ -95,7 +92,6 @@ mount(function (Database $database) {
 
 <div class="max-w-7xl mx-auto p-6">
 
-    {{-- RF16: AVISO VENCIMIENTO --}}
     @if($diasParaVencer !== null && $diasParaVencer <= 5 && $diasParaVencer > 0)
         <div class="mb-6 bg-amber-50 border border-amber-200 p-4 rounded-2xl flex items-center justify-between shadow-sm">
             <div class="flex items-center gap-3">
@@ -126,7 +122,6 @@ mount(function (Database $database) {
             </div>
         @endif
 
-        {{-- ALERTA MAÑANA (RF1) --}}
         @if(count($recordatoriosMañana) > 0)
             <div class="bg-primary-50 border border-primary-200 p-4 rounded-2xl flex items-center justify-between shadow-sm">
                 <div class="flex items-center gap-4">
@@ -166,7 +161,6 @@ mount(function (Database $database) {
     @endif
 
     {{-- HEADER BIENVENIDA --}}
-    {{-- HEADER DEL DASHBOARD CON INTEGRACIÓN DE PERFIL (RF4) Y PLAN (RF9) --}}
     <div class="mb-8 flex flex-col md:flex-row justify-between items-center md:items-end gap-6">
         <div class="flex items-center gap-5">
             {{-- AVATAR CIRCULAR DINÁMICO --}}
@@ -194,7 +188,6 @@ mount(function (Database $database) {
             </div>
         </div>
 
-        {{-- BADGE DE PLAN (RF9) --}}
         <div class="text-center md:text-right bg-white dark:bg-zinc-900 p-3 px-6 rounded-2xl border border-zinc-100 dark:border-zinc-800 shadow-sm">
             <p class="text-[10px] font-black text-zinc-400 uppercase tracking-widest mb-1">Estatus de Cuenta</p>
             <div class="flex items-center gap-2 justify-center md:justify-end">

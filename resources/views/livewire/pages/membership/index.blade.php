@@ -8,7 +8,7 @@ use Carbon\Carbon;
 state([
     'plans' => [],
     'userSubscription' => null,
-    'receipts' => [], // RF13: Estado para el historial de pagos
+    'receipts' => [],
     'processing' => false,
     'selectedReceipt' => null
 ]);
@@ -32,20 +32,17 @@ mount(function (Database $database) {
         $this->receipts = [];
     }
 });
-// ACCIÓN: Ver Detalle de Recibo (RF13)
 $viewReceipt = function ($id) {
     $this->selectedReceipt = $this->receipts[$id];
     $this->dispatch('open-modal-receipt');
 };
 
-// RF6: Proceso de Suscripción (Simulado para RF12)
 $subscribe = function (Database $database, $planId) {
     if (!auth()->check()) {
         return redirect()->route('login');
     }
     $this->processing = true;
 
-    // Simulación de latencia de pasarela de pago (RF12)
     sleep(1);
 
     $plan = $this->plans[$planId];
@@ -57,13 +54,12 @@ $subscribe = function (Database $database, $planId) {
         'plan_name' => $plan['name'],
         'status' => 'active',
         'price' => (int) $plan['price'], // Usamos el precio dinámico
-        'limit_pets' => (int) ($plan['limit_pets'] ?? 3), // RF2: Guardamos el límite actual
+        'limit_pets' => (int) ($plan['limit_pets'] ?? 3),
         'start_date' => now()->toDateTimeString(),
         'end_date' => now()->addMonth()->toDateTimeString(),
         'auto_renew' => true,
     ];
 
-    // RF13: Crear el objeto del Recibo/Factura
     $receipt = [
         'date' => now()->toDateTimeString(),
         'plan' => $plan['name'],
@@ -82,11 +78,9 @@ $subscribe = function (Database $database, $planId) {
 
     $this->processing = false;
 
-    // RF16: Notificación de éxito
     $this->js("Swal.fire('¡Éxito!', 'Te has suscrito a {$plan['name']}. El recibo ha sido generado.', 'success')");
 };
 
-// RF8: Cancelación de renovación (Mantiene acceso hasta el final del periodo)
 $cancelSubscription = function (Database $database) {
     $uid = auth()->id();
 
@@ -125,7 +119,6 @@ $cancelSubscription = function (Database $database) {
         @endif
     </div>
 
-    {{-- RF9: Estado Actual de la Suscripción --}}
     @if($userSubscription)
         <div class="mb-12 bg-white dark:bg-zinc-900 border border-blue-100 dark:border-blue-900/30 rounded-[2rem] p-8 shadow-xl shadow-blue-500/5 flex flex-col md:flex-row justify-between items-center gap-6">
             <div class="flex items-center gap-5">
@@ -149,7 +142,6 @@ $cancelSubscription = function (Database $database) {
         </div>
     @endif
 
-    {{-- RF5: Grid de Planes Disponibles --}}
     <div class="grid md:grid-cols-3 gap-8">
         @foreach($plans as $id => $plan)
             <div class="bg-white dark:bg-zinc-900 border {{ ($userSubscription['plan_id'] ?? '') == $id ? 'border-blue-500 ring-4 ring-blue-500/10' : 'border-zinc-100 dark:border-zinc-800' }} rounded-[2.5rem] p-8 flex flex-col relative transition hover:shadow-2xl">
@@ -164,7 +156,6 @@ $cancelSubscription = function (Database $database) {
                     <span class="text-zinc-400 text-sm">/ mes</span>
                 </div>
 
-                    {{-- RF2: Servicios y Funcionalidades Dinámicas --}}
                     <ul class="space-y-4 mb-10 flex-1">
                         {{-- 1. Característica Dinámica: Límite de Mascotas --}}
                         <li class="flex items-start gap-3 text-zinc-600 dark:text-zinc-400 text-sm leading-tight font-bold">
@@ -231,11 +222,9 @@ $cancelSubscription = function (Database $database) {
         @endforeach
     </div>
 
-    {{-- RF13: Historial de Pagos --}}
     <div class="mt-24">
         <div class="flex items-center gap-3 mb-6">
             <h3 class="text-2xl font-black dark:text-white tracking-tight">Historial de Pagos</h3>
-            <span class="px-2.5 py-0.5 bg-zinc-100 dark:bg-zinc-800 text-zinc-500 rounded-lg text-xs font-bold uppercase tracking-widest">RF13</span>
         </div>
 
         <div class="bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 rounded-[2rem] overflow-hidden shadow-sm">
@@ -274,7 +263,6 @@ $cancelSubscription = function (Database $database) {
             </div>
         </div>
     </div>
-    {{-- MODAL DE RECIBO DETALLADO (RF13) --}}
     <dialog wire:ignore.self id="modal-receipt"
             x-on:open-modal-receipt.window="$el.showModal()"
             x-on:close-modal-receipt.window="$el.close()"

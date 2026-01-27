@@ -34,7 +34,6 @@ mount(function (Database $database) use ($fetchPets) {
     $uid = auth()->id();
     $this->userSub = $database->getReference("user_subscriptions/$uid")->getValue();
 
-    // RF2: Cargamos la configuración maestra de planes
     $this->plansConfig = $database->getReference('membership_plans')->getValue() ?? [];
 
     $response = Http::get('https://dog.ceo/api/breeds/list/all');
