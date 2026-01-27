@@ -8,7 +8,7 @@ layout('components.layouts.app');
     {{-- Hero de Servicios --}}
     <div class="py-20 px-6 text-center bg-zinc-50 dark:bg-zinc-900/50 border-b border-zinc-100 dark:border-zinc-800">
         <h1 class="text-4xl md:text-5xl font-black text-zinc-900 dark:text-white tracking-tight mb-4">
-            Nuestros <span class="text-blue-600">Servicios</span>
+            Nuestros <span class="text-primary-600">Servicios</span>
         </h1>
         <p class="text-zinc-500 max-w-2xl mx-auto text-lg">
             En PetCare, combinamos tecnología y amor por los animales para ofrecerte herramientas integrales en el cuidado de tus mascotas.
@@ -88,12 +88,12 @@ layout('components.layouts.app');
     </div>
 
     {{-- CTA Final --}}
-    <div class="max-w-4xl mx-auto mb-20 p-8 md:p-12 bg-blue-600 rounded-[3rem] text-center text-white shadow-2xl mx-6 lg:mx-auto">
+    <div class="max-w-4xl mx-auto mb-20 p-8 md:p-12 bg-primary-600 rounded-[3rem] text-center text-white shadow-2xl mx-6 lg:mx-auto">
         <h2 class="text-3xl font-black mb-4 italic">¿Listo para darle lo mejor a tu mascota?</h2>
         <p class="text-blue-100 mb-8 max-w-lg mx-auto">Únete a los cientos de dueños que ya están transformando la gestión de salud de sus compañeros.</p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="/register" class="bg-white text-blue-600 px-8 py-3 rounded-2xl font-black hover:bg-blue-50 transition shadow-lg">Comenzar Ahora</a>
-            <a href="/membresias" class="bg-blue-500 text-white border border-white/20 px-8 py-3 rounded-2xl font-black hover:bg-blue-400 transition">Ver Planes</a>
+            <a href="/register" class="bg-white text-primary-800 px-8 py-3 rounded-2xl font-black hover:bg-primary-200 transition shadow-lg">Comenzar Ahora</a>
+            <a href="/membresias" class="bg-primary-700 text-white border border-white/20 px-8 py-3 rounded-2xl font-black hover:bg-primary-400 transition">Ver Planes</a>
         </div>
     </div>
 </div>

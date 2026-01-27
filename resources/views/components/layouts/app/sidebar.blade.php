@@ -108,7 +108,7 @@
             </flux:dropdown>
         @else
             <div class="p-2">
-                <flux:button :href="route('login')" variant="primary" class="w-full !bg-blue-600" wire:navigate>Iniciar Sesión</flux:button>
+                <flux:button :href="route('login')" variant="primary" class="w-full !bg-primary-600  text-primary-200" wire:navigate>Iniciar Sesión</flux:button>
             </div>
         @endauth
     </div>
