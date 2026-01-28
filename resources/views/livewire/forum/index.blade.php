@@ -177,12 +177,12 @@ $openPost = function ($postId) {
     {{-- CABECERA --}}
     <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
         <div>
-            <h1 class="text-3xl font-black text-secondary dark:text-white">Foro de Comunidad</h1>
+            <h1 class="text-3xl font-black text-secondary dark:text-secondary">Foro de Comunidad</h1>
             <p class="text-zinc-500">Comparte experiencias con otros dueños de mascotas</p>
         </div>
 
         <div class="flex gap-3 w-full md:w-auto">
-            <input wire:model.live="search" type="text" placeholder="Buscar temas..." class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-xl px-4 py-2 w-full md:w-64 focus:ring-2 focus:ring-primary-500 outline-none">
+            <input wire:model.live="search" type="text" placeholder="Buscar temas..." class="bg-white dark:bg-secondary-light border border-zinc-200 dark:border-zinc-700 rounded-xl px-4 py-2 w-full md:w-64 focus:ring-2 focus:ring-primary-500 outline-none">
             <button wire:click="$set('showCreateModal', true)" class="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-xl font-bold whitespace-nowrap shadow-lg transition transform hover:scale-105">+ Crear Post</button>
         </div>
     </div>
@@ -190,7 +190,7 @@ $openPost = function ($postId) {
     {{-- FEED DE NOTICIAS --}}
     <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         @forelse($this->filteredPosts as $post)
-            <div class="bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 rounded-3xl p-5 shadow-sm hover:shadow-md transition flex flex-col h-full relative group">
+            <div class="bg-white dark:bg-secondary-light border border-zinc-100 dark:border-zinc-800 rounded-3xl p-5 shadow-sm hover:shadow-md transition flex flex-col h-full relative group">
 
                 {{-- 2. REPORTE CON SWEETALERT2 --}}
                 <button
@@ -252,15 +252,15 @@ $openPost = function ($postId) {
     {{-- 3. MODAL CREAR POST CORREGIDO (CON VALIDACIONES VISIBLES) --}}
     @if($showCreateModal)
         <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-in fade-in">
-            <div class="bg-white dark:bg-zinc-900 w-full max-w-lg rounded-3xl p-6 shadow-2xl">
+            <div class="bg-white dark:bg-secondary-light w-full max-w-lg rounded-3xl p-6 shadow-2xl">
                 <h2 class="text-xl font-bold mb-4 dark:text-white">Crear Nueva Publicación</h2>
 
                 <input wire:model="newTitle" type="text" placeholder="Título (min. 5 caracteres)"
-                       class="w-full mb-1 rounded-xl border-zinc-200 dark:bg-zinc-800 dark:border-zinc-700 p-3 font-bold focus:ring-2 focus:ring-blue-500 outline-none">
+                       class="w-full mb-1 rounded-xl border-zinc-200 dark:bg-secondary dark:border-zinc-700 p-3 font-bold focus:ring-2 focus:ring-blue-500 outline-none">
                 @error('newTitle') <span class="text-red-500 text-xs mb-3 block">{{ $message }}</span> @enderror
 
                 <textarea wire:model="newBody" rows="4" placeholder="Cuerpo (min. 10 caracteres)"
-                          class="w-full mb-1 rounded-xl border-zinc-200 dark:bg-zinc-800 dark:border-zinc-700 p-3 focus:ring-2 focus:ring-blue-500 outline-none"></textarea>
+                          class="w-full mb-1 rounded-xl border-zinc-200 dark:bg-secondary dark:border-zinc-700 p-3 focus:ring-2 focus:ring-blue-500 outline-none"></textarea>
                 @error('newBody') <span class="text-red-500 text-xs mb-3 block">{{ $message }}</span> @enderror
 
                 <div class="mb-4 mt-2">

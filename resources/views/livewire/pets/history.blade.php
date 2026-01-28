@@ -79,13 +79,13 @@ mount(function (Database $database, $id) {
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
                 </a>
                 <div>
-                    <h2 class="text-3xl font-black text-zinc-900 dark:text-white">Historial de {{ $pet['Nombre'] }}</h2>
+                    <h2 class="text-3xl font-black text-zinc-900 dark:text-secondary">Historial de {{ $pet['Nombre'] }}</h2>
                     <p class="text-zinc-500">{{ $pet['Especie'] }} • {{ $pet['Raza'] }}</p>
                 </div>
             </div>
             <button type="button"
                     onclick="descargarReportePDF()"
-                    class="no-print flex items-center gap-2 bg-zinc-900 text-white px-5 py-2.5 rounded-2xl font-bold hover:bg-zinc-800 shadow-lg cursor-pointer transition-colors">
+                    class="no-print flex items-center gap-2 bg-secondary-light text-white px-5 py-2.5 rounded-2xl font-bold hover:bg-zinc-800 shadow-lg cursor-pointer transition-colors">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
                 <span>Exportar Historial</span>
             </button>
@@ -101,7 +101,7 @@ mount(function (Database $database, $id) {
                     <div class="relative flex justify-center">
                         <div class="z-10 w-4 h-4 rounded-full bg-primary-600 border-4 border-white mt-1"></div>
                     </div>
-                    <div class="bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 p-6 rounded-3xl shadow-sm">
+                    <div class="bg-white dark:bg-secondary-light border border-zinc-100 dark:border-zinc-800 p-6 rounded-3xl shadow-sm">
                         <span class="text-[9px] font-black text-primary-600 bg-primary-50 dark:bg-primary-900/30 px-2 py-1 rounded-lg uppercase">{{ $record['reason'] }}</span>
                         <h3 class="text-lg font-bold text-secondary dark:text-white mt-2">{{ $record['vet_name'] ?? 'Clínica SIVi' }}</h3>
                         @if(!empty($record['notes']))

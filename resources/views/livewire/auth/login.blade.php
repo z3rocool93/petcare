@@ -1,8 +1,8 @@
 <x-layouts.auth>
-    <div class="flex flex-col gap-8 bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700">
+    <div class="flex flex-col gap-8 bg-white dark:bg-secondary-light p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700">
 
         <div class="flex flex-col items-center gap-4">
-            <div class="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center text-3xl shadow-lg shadow-blue-100 dark:shadow-none">
+            <div class="w-16 h-16 bg-primary-600 rounded-2xl flex items-center justify-center text-3xl shadow-lg shadow-blue-100 dark:shadow-none">
                 🐶
             </div>
             <div class="text-center">

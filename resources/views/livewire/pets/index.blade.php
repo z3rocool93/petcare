@@ -248,7 +248,7 @@ $deletePet = function (Database $database, $id) use ($fetchPets) {
                 <flux:textarea wire:model="notas" label="Notas Adicionales" />
                 <div class="flex gap-3 mt-6">
                     <flux:button type="button" onclick="document.getElementById('modal-pet').close()" variant="ghost" class="flex-1">Cancelar</flux:button>
-                    <flux:button type="submit" variant="primary" class="flex-1 !bg-blue-600">{{ $editingPetId ? 'Actualizar' : 'Guardar' }}</flux:button>
+                    <flux:button type="submit" variant="primary" class="flex-1 text-brand-bone !bg-secondary">{{ $editingPetId ? 'Actualizar' : 'Guardar' }}</flux:button>
                 </div>
             </form>
         </div>

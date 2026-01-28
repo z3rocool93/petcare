@@ -109,7 +109,7 @@ $simularRespuesta = function (Database $database, $id) {
     <div class="flex justify-between items-center mb-8">
         <div>
             <h1 class="text-3xl font-black text-secondary dark:text-secondary-light">Consultas Veterinarias</h1>
-            <p class="text-zinc-500">Contacta con nuestro equipo de expertos (RF1)</p>
+            <p class="text-zinc-500">Contacta con nuestro equipo de expertos</p>
         </div>
         <button wire:click="$toggle('showForm')" class="bg-primary-600 hover:bg-primary-700 text-white px-5 py-2.5 rounded-xl font-bold transition shadow-lg flex items-center gap-2">
             <span class="text-xl">+</span> Nueva Consulta
@@ -214,7 +214,7 @@ $simularRespuesta = function (Database $database, $id) {
                     {{-- BOTÓN DE SIMULACIÓN (Solo visible para demo académica) --}}
                     <div class="mt-4 flex justify-end">
                         <button wire:click="simularRespuesta('{{ $consult['id'] }}')"
-                                class="text-xs bg-zinc-800 text-zinc-200 px-3 py-1.5 rounded-lg hover:bg-zinc-700 transition opacity-0 group-hover:opacity-100">
+                                class="text-xs bg-primary-500 text-zinc-200 px-3 py-1.5 rounded-lg hover:bg-zinc-700 transition opacity-0 group-hover:opacity-100">
                             ⚡ Demo: Simular Respuesta
                         </button>
                     </div>
