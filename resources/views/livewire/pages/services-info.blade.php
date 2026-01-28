@@ -4,7 +4,7 @@ use function Livewire\Volt\{layout};
 layout('components.layouts.app');
 ?>
 
-<div class="bg-white dark:bg-zinc-950 min-h-screen">
+<div class="bg-white dark:bg-secondary-light min-h-screen">
     {{-- Hero de Servicios --}}
     <div class="py-20 px-6 text-center bg-zinc-50 dark:bg-zinc-900/50 border-b border-zinc-100 dark:border-zinc-800">
         <h1 class="text-4xl md:text-5xl font-black text-zinc-900 dark:text-white tracking-tight mb-4">
@@ -88,7 +88,7 @@ layout('components.layouts.app');
     </div>
 
     {{-- CTA Final --}}
-    <div class="max-w-4xl mx-auto mb-20 p-8 md:p-12 bg-primary-600 rounded-[3rem] text-center text-white shadow-2xl mx-6 lg:mx-auto">
+    <div class="max-w-3xl mx-auto mb-20 p-8 md:p-12 bg-primary-600 rounded-[3rem] text-center text-white shadow-2xl mx-5 lg:mx-auto">
         <h2 class="text-3xl font-black mb-4 italic">¿Listo para darle lo mejor a tu mascota?</h2>
         <p class="text-blue-100 mb-8 max-w-lg mx-auto">Únete a los cientos de dueños que ya están transformando la gestión de salud de sus compañeros.</p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
