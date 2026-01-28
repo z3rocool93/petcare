@@ -50,6 +50,7 @@ mount(function (Database $database) {
         ->first();
     $this->lastAttended = $lastRaw ? (array)$lastRaw : null;
 
+    // 4. SIMULACIÓN RENOVACIÓN (RF14/RF15)
     if ($this->userSub && ($this->userSub['auto_renew'] ?? false)) {
         $fechaFin = Carbon::parse($this->userSub['end_date']);
         if (now()->greaterThan($fechaFin)) {
@@ -67,6 +68,7 @@ mount(function (Database $database) {
         }
     }
 
+    // 5. RF1: RECORDATORIOS MAÑANA
     $this->recordatoriosMañana = collect($appts)
         ->filter(fn($item) => ($item['date'] === $mañana) || (($item['due_date'] ?? '') === $mañana))
         ->values()
@@ -84,6 +86,7 @@ mount(function (Database $database) {
         ]);
     }
 
+    // 6. RF16: DÍAS PARA VENCER
     if ($this->userSub && isset($this->userSub['end_date'])) {
         $this->diasParaVencer = (int)now()->diffInDays(Carbon::parse($this->userSub['end_date']), false);
     }
@@ -92,6 +95,7 @@ mount(function (Database $database) {
 
 <div class="max-w-7xl mx-auto p-6">
 
+    {{-- RF16: AVISO VENCIMIENTO --}}
     @if($diasParaVencer !== null && $diasParaVencer <= 5 && $diasParaVencer > 0)
         <div class="mb-6 bg-amber-50 border border-amber-200 p-4 rounded-2xl flex items-center justify-between shadow-sm">
             <div class="flex items-center gap-3">
@@ -122,6 +126,7 @@ mount(function (Database $database) {
             </div>
         @endif
 
+        {{-- ALERTA MAÑANA (RF1) --}}
         @if(count($recordatoriosMañana) > 0)
             <div class="bg-primary-50 border border-primary-200 p-4 rounded-2xl flex items-center justify-between shadow-sm">
                 <div class="flex items-center gap-4">
@@ -140,7 +145,7 @@ mount(function (Database $database) {
 
     {{-- ÚLTIMA ATENCIÓN --}}
     @if($lastAttended)
-        <div class="mb-8 bg-secondary dark:bg-zinc-800 text-white p-6 rounded-[2rem] flex flex-col md:flex-row items-center justify-between shadow-2xl relative overflow-hidden group">
+        <div class="mb-8 bg-secondary dark:bg-secondary-light text-white p-6 rounded-[2rem] flex flex-col md:flex-row items-center justify-between shadow-2xl relative overflow-hidden group">
             <div class="absolute -right-10 -top-10 text-9xl opacity-10 rotate-12 group-hover:rotate-0 transition-transform">📋</div>
             <div class="flex items-center gap-6 relative z-10">
                 <div class="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center text-3xl backdrop-blur-md border border-white/20">
@@ -148,8 +153,8 @@ mount(function (Database $database) {
                 </div>
                 <div>
                     <span class="text-primary-400 text-xs font-black uppercase tracking-widest">Última Atención</span>
-                    <h3 class="text-2xl font-black">{{ $lastAttended['pet_name'] }}</h3>
-                    <p class="text-zinc-400 text-sm">Atendido el {{ Carbon::parse($lastAttended['date'])->translatedFormat('d \d\e F') }}</p>
+                    <h3 class="text-2xl text-shadow-zinc-300 font-black">{{ $lastAttended['pet_name'] }}</h3>
+                    <p class="text-shadow-zinc-300t text-sm">Atendido el {{ Carbon::parse($lastAttended['date'])->translatedFormat('d \d\e F') }}</p>
                 </div>
             </div>
             <div class="mt-6 md:mt-0 relative z-10">
@@ -161,6 +166,7 @@ mount(function (Database $database) {
     @endif
 
     {{-- HEADER BIENVENIDA --}}
+    {{-- HEADER DEL DASHBOARD CON INTEGRACIÓN DE PERFIL (RF4) Y PLAN (RF9) --}}
     <div class="mb-8 flex flex-col md:flex-row justify-between items-center md:items-end gap-6">
         <div class="flex items-center gap-5">
             {{-- AVATAR CIRCULAR DINÁMICO --}}
@@ -181,13 +187,14 @@ mount(function (Database $database) {
             </div>
 
             <div>
-                <h1 class="text-2xl md:text-3xl font-black text-secondary dark:text-white uppercase tracking-tight">
+                <h1 class="text-2xl md:text-3xl font-black text-secondary dark:text-secondary uppercase tracking-tight">
                     ¡Hola, {{ explode(' ', auth()->user()->name)[0] }}! 👋
                 </h1>
-                <p class="text-zinc-500 dark:text-zinc-400 text-sm md:text-base">Bienvenido de vuelta a PetCare.</p>
+                <p class="text-secondary dark:text-zinc-400 text-sm md:text-base">Bienvenido de vuelta a PetCare.</p>
             </div>
         </div>
 
+        {{-- BADGE DE PLAN (RF9) --}}
         <div class="text-center md:text-right bg-white dark:bg-zinc-900 p-3 px-6 rounded-2xl border border-zinc-100 dark:border-zinc-800 shadow-sm">
             <p class="text-[10px] font-black text-zinc-400 uppercase tracking-widest mb-1">Estatus de Cuenta</p>
             <div class="flex items-center gap-2 justify-center md:justify-end">
@@ -204,19 +211,19 @@ mount(function (Database $database) {
 
     {{-- ESTADÍSTICAS --}}
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-        <div class="bg-primary-700 rounded-3xl p-6 text-white shadow-xl shadow-blue-500/20">
+        <div class="bg-primary-700 rounded-3xl p-6 text-white shadow-xl shadow-orange-500/20">
             <p class="text-blue-100 text-xs font-bold uppercase tracking-wider">Total Mascotas</p>
             <h3 class="text-5xl font-black mt-2">{{ $totalMascotas }}</h3>
             <a href="/mascotas" wire:navigate class="inline-flex items-center mt-6 text-xs font-bold bg-white/20 px-4 py-2 rounded-xl">Gestionar todas →</a>
         </div>
-        <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-6 shadow-sm">
-            <p class="text-zinc-500 text-xs font-bold uppercase mb-4">Perros: {{ $perrosCount }}</p>
+        <div class="bg-white dark:bg-primary-400 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-6 shadow-sm">
+            <p class="text-secondary-light text-xs font-bold uppercase mb-4">Perros: {{ $perrosCount }}</p>
             <div class="w-full bg-zinc-100 dark:bg-zinc-800 h-2 rounded-full">
                 <div class="bg-orange-500 h-full rounded-full" style="width: {{ $totalMascotas > 0 ? ($perrosCount/$totalMascotas)*100 : 0 }}%"></div>
             </div>
         </div>
-        <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-6 shadow-sm">
-            <p class="text-zinc-500 text-xs font-bold uppercase mb-4">Gatos: {{ $gatosCount }}</p>
+        <div class="bg-white dark:bg-primary-400 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-6 shadow-sm">
+            <p class="text-secondary-light text-xs font-bold uppercase mb-4">Gatos: {{ $gatosCount }}</p>
             <div class="w-full bg-zinc-100 dark:bg-zinc-800 h-2 rounded-full">
                 <div class="bg-purple-500 h-full rounded-full" style="width: {{ $totalMascotas > 0 ? ($gatosCount/$totalMascotas)*100 : 0 }}%"></div>
             </div>
@@ -226,19 +233,19 @@ mount(function (Database $database) {
     {{-- LISTA RECIENTE --}}
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div class="lg:col-span-2">
-            <h4 class="text-xl font-bold mb-4 dark:text-white">Últimas incorporaciones</h4>
-            <div class="bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 rounded-3xl overflow-hidden shadow-sm">
+            <h4 class="text-xl font-bold mb-4 dark:text-secondary-light">Últimas incorporaciones</h4>
+            <div class="bg-white dark:bg-secondary-light border border-zinc-100 dark:border-zinc-800 rounded-3xl overflow-hidden shadow-sm">
                 <div class="divide-y divide-zinc-100 dark:divide-zinc-800">
                     @forelse($recentPets as $id => $pet)
-                        <div class="p-4 flex items-center justify-between hover:bg-zinc-50 transition">
+                        <div class="p-4 flex items-center justify-between hover:bg-secondary transition">
                             <div class="flex items-center gap-4">
                                 <span class="text-2xl">{{ ($pet['Especie'] ?? '') === 'Perro' ? '🐶' : '🐱' }}</span>
                                 <div>
-                                    <p class="font-bold text-zinc-900 dark:text-white">{{ $pet['Nombre'] }}</p>
+                                    <p class="font-bold text-zinc-300 dark:text-zinc-300">{{ $pet['Nombre'] }}</p>
                                     <p class="text-xs text-zinc-500">{{ $pet['Raza'] ?? 'Mestizo' }}</p>
                                 </div>
                             </div>
-                            <a href="{{ route('pets.history', $id) }}" wire:navigate class="text-blue-600 font-bold text-sm">Ver Ficha</a>
+                            <a href="{{ route('pets.history', $id) }}" wire:navigate class="text-primary-700 font-bold text-sm">Ver Ficha</a>
                         </div>
                     @empty
                         <div class="p-10 text-center text-zinc-400 italic">No hay mascotas aún.</div>
@@ -248,11 +255,11 @@ mount(function (Database $database) {
         </div>
 
         <div class="space-y-6">
-            <h4 class="text-xl font-bold mb-4 dark:text-white">Acciones rápidas</h4>
+            <h4 class="text-xl font-bold mb-4 dark:text-secondary-light">Acciones rápidas</h4>
             <div class="grid gap-3">
-                <flux:button href="/mascotas" icon="plus" variant="filled" class="!justify-start rounded-2xl">Registrar Mascota</flux:button>
-                <flux:button href="/foro" icon="chat-bubble-left-right" variant="ghost" class="!justify-start rounded-2xl">Ir al Foro</flux:button>
-                <flux:button href="/membresias" icon="credit-card" variant="ghost" class="!justify-start rounded-2xl">Cambiar Plan</flux:button>
+                <flux:button href="/mascotas" icon="plus" variant="filled" class="!justify-start rounded-2xl !text-primary-700 hover:!bg-primary-200 !border-none shadow-sm transition-all">Registrar Mascota</flux:button>
+                <flux:button href="/foro" icon="chat-bubble-left-right" variant="ghost" class="!justify-start rounded-2xl !text-secondary-light hover:!bg-primary-50 hover:!text-primary-700 transition-colors">Ir al Foro</flux:button>
+                <flux:button href="/membresias" icon="credit-card" variant="ghost" class="!justify-start rounded-2xl !text-secondary-light hover:!bg-primary-50 hover:!text-primary-700 transition-colors">Cambiar Plan</flux:button>
             </div>
         </div>
     </div>

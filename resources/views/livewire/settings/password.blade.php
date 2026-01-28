@@ -40,38 +40,59 @@ new class extends Component {
     @include('partials.settings-heading')
 
     <x-settings.layout :heading="__('Actualizar contraseña')" :subheading="__('Asegúrese de que su cuenta utilice una contraseña larga y aleatoria para mantener la seguridad')">
+
         <form method="POST" wire:submit="updatePassword" class="mt-6 space-y-6">
-            <flux:input
-                wire:model="current_password"
-                :label="__('Contraseña actual')"
-                type="password"
-                required
-                autocomplete="current-password"
-            />
-            <flux:input
-                wire:model="password"
-                :label="__('Nueva contraseña')"
-                type="password"
-                required
-                autocomplete="new-password"
-            />
-            <flux:input
-                wire:model="password_confirmation"
-                :label="__('Confirma la contraseña')"
-                type="password"
-                required
-                autocomplete="new-password"
-            />
 
-            <div class="flex items-center gap-4">
-                <div class="flex items-center justify-end">
-                    <flux:button variant="primary" type="submit" class="w-full" data-test="update-password-button">
-                        {{ __('Guardar') }}
-                    </flux:button>
-                </div>
+            {{-- Contraseña Actual --}}
+            <flux:field>
+                <flux:label class="!text-secondary font-black text-xs uppercase tracking-tighter">{{ __('Contraseña actual') }}</flux:label>
+                <flux:input
+                    wire:model="current_password"
+                    type="password"
+                    required
+                    autocomplete="current-password"
+                    class="!bg-white !border-secondary/20 focus:!ring-primary-600 !text-secondary"
+                />
+            </flux:field>
 
-                <x-action-message class="me-3" on="password-updated">
-                    {{ __('Guardado.') }}
+            {{-- Nueva Contraseña --}}
+            <flux:field>
+                <flux:label class="!text-secondary font-black text-xs uppercase tracking-tighter">{{ __('Nueva contraseña') }}</flux:label>
+                <flux:input
+                    wire:model="password"
+                    type="password"
+                    required
+                    autocomplete="new-password"
+                    class="!bg-white !border-secondary/20 focus:!ring-primary-600 !text-secondary"
+                />
+            </flux:field>
+
+            {{-- Confirmar Contraseña --}}
+            <flux:field>
+                <flux:label class="!text-secondary font-black text-xs uppercase tracking-tighter">{{ __('Confirma la contraseña') }}</flux:label>
+                <flux:input
+                    wire:model="password_confirmation"
+                    type="password"
+                    required
+                    autocomplete="new-password"
+                    class="!bg-white !border-secondary/20 focus:!ring-primary-600 !text-secondary"
+                />
+            </flux:field>
+
+            <div class="flex items-center gap-4 pt-4 border-t border-secondary/10">
+                {{-- Botón Guardar con estilo Naranja PetCare --}}
+                <flux:button
+                    variant="primary"
+                    type="submit"
+                    class="px-10 rounded-xl !bg-primary-600 hover:!bg-primary-700 !text-white shadow-lg shadow-primary-600/20"
+                >
+                    {{ __('Guardar Cambios') }}
+                </flux:button>
+
+                {{-- Mensaje de éxito consistente con el perfil --}}
+                <x-action-message class="!text-secondary font-bold flex items-center gap-2" on="password-updated">
+                    <flux:icon.check-circle variant="micro" class="text-green-600" />
+                    {{ __('¡Contraseña actualizada!') }}
                 </x-action-message>
             </div>
         </form>

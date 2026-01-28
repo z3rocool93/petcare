@@ -8,7 +8,7 @@ use Carbon\Carbon;
 state([
     'plans' => [],
     'userSubscription' => null,
-    'receipts' => [],
+    'receipts' => [], // RF13: Estado para el historial de pagos
     'processing' => false,
     'selectedReceipt' => null
 ]);
@@ -32,17 +32,20 @@ mount(function (Database $database) {
         $this->receipts = [];
     }
 });
+// ACCIÓN: Ver Detalle de Recibo (RF13)
 $viewReceipt = function ($id) {
     $this->selectedReceipt = $this->receipts[$id];
     $this->dispatch('open-modal-receipt');
 };
 
+// RF6: Proceso de Suscripción (Simulado para RF12)
 $subscribe = function (Database $database, $planId) {
     if (!auth()->check()) {
         return redirect()->route('login');
     }
     $this->processing = true;
 
+    // Simulación de latencia de pasarela de pago (RF12)
     sleep(1);
 
     $plan = $this->plans[$planId];
@@ -54,12 +57,13 @@ $subscribe = function (Database $database, $planId) {
         'plan_name' => $plan['name'],
         'status' => 'active',
         'price' => (int) $plan['price'], // Usamos el precio dinámico
-        'limit_pets' => (int) ($plan['limit_pets'] ?? 3),
+        'limit_pets' => (int) ($plan['limit_pets'] ?? 3), // RF2: Guardamos el límite actual
         'start_date' => now()->toDateTimeString(),
         'end_date' => now()->addMonth()->toDateTimeString(),
         'auto_renew' => true,
     ];
 
+    // RF13: Crear el objeto del Recibo/Factura
     $receipt = [
         'date' => now()->toDateTimeString(),
         'plan' => $plan['name'],
@@ -78,9 +82,11 @@ $subscribe = function (Database $database, $planId) {
 
     $this->processing = false;
 
+    // RF16: Notificación de éxito
     $this->js("Swal.fire('¡Éxito!', 'Te has suscrito a {$plan['name']}. El recibo ha sido generado.', 'success')");
 };
 
+// RF8: Cancelación de renovación (Mantiene acceso hasta el final del periodo)
 $cancelSubscription = function (Database $database) {
     $uid = auth()->id();
 
@@ -101,7 +107,7 @@ $cancelSubscription = function (Database $database) {
     <div class="relative mb-12 flex flex-col items-center">
         {{-- Bloque de Texto Centrado --}}
         <div class="text-center">
-            <h1 class="text-4xl font-black text-zinc-900 dark:text-white tracking-tight">
+            <h1 class="text-4xl font-black text-zinc-900 dark:text-secondary tracking-tight">
                 Membresías <span class="text-primary-600">PetCare</span>
             </h1>
             <p class="text-zinc-500 mt-2">Gestiona tus beneficios y servicios exclusivos para tus mascotas</p>
@@ -111,7 +117,7 @@ $cancelSubscription = function (Database $database) {
         @if(auth()->user()?->isAdmin())
             <a href="{{ route('admin.membership') }}"
                wire:navigate
-               class="mt-6 md:mt-0 md:absolute md:right-0 md:top-0 flex items-center gap-2 bg-zinc-900 dark:bg-zinc-800 text-brand-bone px-4 py-2 rounded-xl border border-primary-700 shadow-lg text-xs font-bold uppercase transition hover:bg-primary-400"
+               class="mt-6 md:mt-0 md:absolute md:right-0 md:top-0 flex items-center gap-2 bg-zinc-900 dark:bg-primary-300 text-secondary px-4 py-2 rounded-xl border border-primary-700 shadow-lg text-xs font-bold uppercase transition hover:bg-primary-400"
             >
                 <flux:icon.cog-6-tooth variant="micro" />
                 Gestionar Planes
@@ -119,14 +125,15 @@ $cancelSubscription = function (Database $database) {
         @endif
     </div>
 
+    {{-- RF9: Estado Actual de la Suscripción --}}
     @if($userSubscription)
-        <div class="mb-12 bg-white dark:bg-zinc-900 border border-blue-100 dark:border-blue-900/30 rounded-[2rem] p-8 shadow-xl shadow-blue-500/5 flex flex-col md:flex-row justify-between items-center gap-6">
+        <div class="mb-12 bg-white dark:bg-secondary-light border border-blue-100 dark:border-blue-900/30 rounded-[2rem] p-8 shadow-xl shadow-blue-500/5 flex flex-col md:flex-row justify-between items-center gap-6">
             <div class="flex items-center gap-5">
-                <div class="h-14 w-14 bg-blue-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-blue-500/40">
+                <div class="h-14 w-14 bg-primary-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-orange-500/40">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
                 </div>
                 <div>
-                    <h2 class="text-xs font-bold text-blue-600 uppercase tracking-widest">Suscripción Activa</h2>
+                    <h2 class="text-xs font-bold text-zinc-300 uppercase tracking-widest">Suscripción Activa</h2>
                     <p class="text-2xl font-black dark:text-white">{{ $userSubscription['plan_name'] }}</p>
                     <p class="text-zinc-500 text-sm">Vence el: {{ Carbon::parse($userSubscription['end_date'])->format('d/m/Y') }}</p>
                 </div>
@@ -142,23 +149,25 @@ $cancelSubscription = function (Database $database) {
         </div>
     @endif
 
+    {{-- RF5: Grid de Planes Disponibles --}}
     <div class="grid md:grid-cols-3 gap-8">
         @foreach($plans as $id => $plan)
-            <div class="bg-white dark:bg-zinc-900 border {{ ($userSubscription['plan_id'] ?? '') == $id ? 'border-blue-500 ring-4 ring-blue-500/10' : 'border-zinc-100 dark:border-zinc-800' }} rounded-[2.5rem] p-8 flex flex-col relative transition hover:shadow-2xl">
+            <div class="bg-white dark:bg-secondary-light border {{ ($userSubscription['plan_id'] ?? '') == $id ? 'border-primary-500 ring-4 ring-blue-500/10' : 'border-zinc-100 dark:border-zinc-800' }} rounded-[2.5rem] p-8 flex flex-col relative transition hover:shadow-2xl">
 
                 @if(($userSubscription['plan_id'] ?? '') == $id)
-                    <div class="absolute top-0 right-0 bg-blue-500 text-white px-5 py-1.5 rounded-bl-2xl font-bold text-xs uppercase tracking-tighter">Tu Plan</div>
+                    <div class="absolute top-0 right-0 bg-primary-500 text-white px-5 py-1.5 rounded-bl-2xl font-bold text-xs uppercase tracking-tighter">Tu Plan</div>
                 @endif
 
-                <h3 class="text-2xl font-black mb-1 dark:text-white">{{ $plan['name'] }}</h3>
+                <h3 class="text-2xl font-black mb-1 dark:text-zinc-300">{{ $plan['name'] }}</h3>
                 <div class="flex items-baseline gap-1 mb-8">
-                    <span class="text-4xl font-black dark:text-white">${{ number_format($plan['price'], 0, ',', '.') }}</span>
-                    <span class="text-zinc-400 text-sm">/ mes</span>
+                    <span class="text-4xl font-black dark:text-zinc-300">${{ number_format($plan['price'], 0, ',', '.') }}</span>
+                    <span class="text-brand-bone text-sm">/ mes</span>
                 </div>
 
+                    {{-- RF2: Servicios y Funcionalidades Dinámicas --}}
                     <ul class="space-y-4 mb-10 flex-1">
                         {{-- 1. Característica Dinámica: Límite de Mascotas --}}
-                        <li class="flex items-start gap-3 text-zinc-600 dark:text-zinc-400 text-sm leading-tight font-bold">
+                        <li class="flex items-start gap-3 text-zinc-600 dark:text-brand-bone text-sm leading-tight font-bold">
                             <div class="mt-0.5 h-5 w-5 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0">
                                 <svg class="h-3 w-3 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
                             </div>
@@ -222,15 +231,16 @@ $cancelSubscription = function (Database $database) {
         @endforeach
     </div>
 
+    {{-- RF13: Historial de Pagos --}}
     <div class="mt-24">
         <div class="flex items-center gap-3 mb-6">
-            <h3 class="text-2xl font-black dark:text-white tracking-tight">Historial de Pagos</h3>
+            <h3 class="text-2xl font-black dark:text-secondary-light tracking-tight">Historial de Pagos</h3>
         </div>
 
-        <div class="bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 rounded-[2rem] overflow-hidden shadow-sm">
+        <div class="bg-white dark:bg-secondary-light border border-zinc-100 dark:border-zinc-800 rounded-[2rem] overflow-hidden shadow-sm">
             <div class="overflow-x-auto">
                 <table class="w-full text-left">
-                    <thead class="bg-zinc-50 dark:bg-zinc-800/50 text-xs font-bold text-zinc-400 uppercase tracking-widest">
+                    <thead class="bg-zinc-50 dark:bg-zinc-800/50 text-xs font-bold text-zinc-300 uppercase tracking-widest">
                     <tr>
                         <th class="px-8 py-5">Fecha de Emisión</th>
                         <th class="px-8 py-5">Membresía</th>
@@ -263,6 +273,7 @@ $cancelSubscription = function (Database $database) {
             </div>
         </div>
     </div>
+    {{-- MODAL DE RECIBO DETALLADO (RF13) --}}
     <dialog wire:ignore.self id="modal-receipt"
             x-on:open-modal-receipt.window="$el.showModal()"
             x-on:close-modal-receipt.window="$el.close()"

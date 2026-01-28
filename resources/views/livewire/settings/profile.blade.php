@@ -26,6 +26,7 @@ new class extends Component {
         $this->name = $user->name;
         $this->email = $user->email;
 
+        // RF9: Traer el nombre del plan desde Firebase
         $subscription = $database->getReference("user_subscriptions/{$user->id}")->getValue();
         $this->planName = $subscription['plan_name'] ?? 'Básico';
     }
@@ -49,6 +50,7 @@ new class extends Component {
         // Mantenemos la ruta actual por defecto
         $path = $user->profile_photo_path;
 
+        // RF4: Si se subió una foto nueva
         if ($this->photo) {
             // Borramos la anterior si existe
             if ($user->profile_photo_path) {
@@ -90,24 +92,25 @@ new class extends Component {
 }; ?>
 
 <section class="w-full">
+    {{-- El heading de settings también debería recibir estas clases si es un componente tuyo --}}
     @include('partials.settings-heading')
 
     <x-settings.layout :heading="__('Perfil')" :subheading="__('Actualiza tu información y foto de perfil')">
 
-        <div class="mb-8 p-6 bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 rounded-[2.5rem] shadow-sm flex flex-col md:flex-row items-center gap-8">
+        {{-- CARD INFORMATIVA (Ajustada a Petróleo y Naranja) --}}
+        <div class="mb-8 p-6 bg-secondary border border-secondary/10 rounded-[2.5rem] shadow-sm flex flex-col md:flex-row items-center gap-8">
+
             {{-- AVATAR CON PREVIEW --}}
             <div class="relative group">
-                <div class="h-28 w-28 rounded-[2rem] overflow-hidden border-4 border-white dark:border-zinc-800 shadow-2xl bg-blue-600 flex items-center justify-center text-white">
+                {{-- Cambiado bg-blue-600 a bg-primary-600 --}}
+                <div class="h-28 w-28 rounded-[2rem] overflow-hidden border-4 border-secondary shadow-2xl bg-primary-600 flex items-center justify-center text-white">
                     @if ($photo)
-                        {{-- Mientras se está subiendo o antes de guardar --}}
                         <img src="{{ $photo->temporaryUrl() }}" class="h-full w-full object-cover">
                     @elseif (auth()->user()->profile_photo_path)
-                        {{-- Foto persistida en la DB y cargada desde el disco public --}}
                         <img src="{{ Storage::disk('public')->url(auth()->user()->profile_photo_path) }}" class="h-full w-full object-cover">
                     @else
-                        {{-- Fallback si no hay nada --}}
-                        <div class="h-full w-full bg-blue-600 flex items-center justify-center text-4xl font-black uppercase">
-                            {{-- Llamamos al método initials() desde el modelo del usuario --}}
+                        {{-- Fallback: Fondo naranja con iniciales en blanco --}}
+                        <div class="h-full w-full bg-primary-600 flex items-center justify-center text-4xl font-black uppercase text-white">
                             {{ auth()->user()->initials() }}
                         </div>
                     @endif
@@ -116,15 +119,24 @@ new class extends Component {
 
             <div class="flex-1 text-center md:text-left">
                 <div class="flex items-center justify-center md:justify-start gap-2 mb-1">
-                    <span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-[10px] font-black uppercase rounded-lg tracking-widest">
+                    {{-- Badge del Plan: Cambiado de Blue a Primary (Naranja suave) --}}
+                    <span class="px-2 py-0.5 bg-primary-50 text-primary-700 text-[10px] font-black uppercase rounded-lg tracking-widest border border-primary-100">
                         Cuenta {{ $planName }}
                     </span>
                 </div>
-                <h3 class="text-2xl font-black text-zinc-900 dark:text-white uppercase tracking-tight">{{ $name }}</h3>
-                <p class="text-zinc-500 text-sm">{{ $email }}</p>
+                {{-- Nombre en Petróleo --}}
+                <h3 class="text-2xl font-black text-brand-bone uppercase tracking-tight">{{ $name }}</h3>
+                {{-- Email en Petróleo con opacidad --}}
+                <p class="text-brand-bone/70 text-sm font-medium">{{ $email }}</p>
             </div>
 
-            <flux:button href="{{ route('membership.index') }}" wire:navigate variant="ghost" class="rounded-xl">
+            {{-- Botón Cambiar Plan en Petróleo --}}
+            <flux:button
+                href="{{ route('membership.index') }}"
+                wire:navigate
+                variant="ghost"
+                class="rounded-xl !text-secondary hover:!bg-primary-50 hover:!text-primary-700 transition-colors"
+            >
                 Cambiar Plan
             </flux:button>
         </div>
@@ -134,65 +146,62 @@ new class extends Component {
 
             {{-- INPUT DE FOTO --}}
             <flux:field>
-                <flux:label>Foto de Perfil</flux:label>
+                <flux:label class="!text-secondary font-black uppercase text-xs tracking-wider">Foto de Perfil</flux:label>
                 <div class="mt-2 flex items-center gap-4" x-data>
-                    {{-- Input real oculto con una referencia (x-ref) --}}
-                    <input
-                        type="file"
-                        wire:model="photo"
-                        x-ref="fileInput"
-                        class="hidden"
-                        accept="image/*"
-                    />
+                    <input type="file" wire:model="photo" x-ref="fileInput" class="hidden" accept="image/*" />
 
-                    {{-- Botón que al hacer clic activa el input oculto --}}
                     <flux:button
                         type="button"
                         icon="camera"
                         variant="filled"
-                        class="rounded-xl"
+                        class="rounded-xl !bg-primary-600 hover:!bg-primary-700 !text-white shadow-sm"
                         x-on:click="$refs.fileInput.click()"
                     >
                         Seleccionar imagen
                     </flux:button>
 
-                    {{-- Indicador de carga --}}
-                    <flux:text class="text-xs italic" wire:loading wire:target="photo">
+                    <flux:text class="!text-secondary/70 text-xs italic" wire:loading wire:target="photo">
                         Subiendo archivo...
                     </flux:text>
                 </div>
                 <flux:error name="photo" />
             </flux:field>
 
-            <flux:input wire:model="name" :label="__('Nombre')" type="text" required autocomplete="name" />
+            <flux:field>
+                <flux:label class="!text-secondary font-black text-xs uppercase tracking-tighter">Nombre Completo</flux:label>
+                <flux:input wire:model="name" type="text" required autocomplete="name" class="!bg-white !border-secondary/20 focus:!ring-primary-600 !text-secondary" />
+            </flux:field>
 
-            <div>
-                <flux:input wire:model="email" :label="__('Email')" type="email" required autocomplete="email" />
+            <flux:field>
+                <flux:label class="!text-secondary font-black text-xs uppercase tracking-tighter">Correo Electrónico</flux:label>
+                <flux:input wire:model="email" type="email" required autocomplete="email" class="!bg-white !border-secondary/20 focus:!ring-primary-600 !text-secondary" />
 
                 @if (auth()->user() instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! auth()->user()->hasVerifiedEmail())
-                    <div class="mt-4 p-4 bg-amber-50 dark:bg-amber-900/10 border border-amber-100 dark:border-amber-800 rounded-2xl">
-                        <flux:text class="text-amber-800 dark:text-amber-400 text-sm">
-                            {{ __('Your email address is unverified.') }}
-                            <flux:link class="font-bold cursor-pointer underline" wire:click.prevent="resendVerificationNotification">
-                                {{ __('Click here to re-send.') }}
+                    <div class="mt-4 p-4 bg-primary-50 border border-primary-100 rounded-2xl">
+                        <flux:text class="!text-secondary text-sm">
+                            {{ __('Tu dirección de correo no está verificada.') }}
+                            <flux:link class="!text-primary-700 font-bold cursor-pointer underline" wire:click.prevent="resendVerificationNotification">
+                                {{ __('Haz clic aquí para re-enviar.') }}
                             </flux:link>
                         </flux:text>
                     </div>
                 @endif
-            </div>
+            </flux:field>
 
-            <div class="flex items-center gap-4 pt-4 border-t border-zinc-100 dark:border-zinc-800">
-                <flux:button variant="primary" type="submit" class="px-10 rounded-xl shadow-lg shadow-blue-500/20">
+            <div class="flex items-center gap-4 pt-4 border-t border-secondary/10">
+                <flux:button variant="primary" type="submit" class="px-10 rounded-xl !bg-primary-600 hover:!bg-primary-700 shadow-lg shadow-primary-600/20">
                     {{ __('Guardar Perfil') }}
                 </flux:button>
 
-                <x-action-message class="text-green-600 font-bold" on="profile-updated">
-                    {{ __('Updated!') }}
+                <x-action-message class="!text-secondary font-bold flex items-center gap-2" on="profile-updated">
+                    <flux:icon.check-circle variant="micro" class="text-green-600" />
+                    {{ __('¡Actualizado con éxito!') }}
                 </x-action-message>
             </div>
         </form>
 
-        <div class="mt-12 pt-12">
+        {{-- Nota: El componente de borrar usuario también debería ser revisado para seguir esta línea --}}
+        <div class="mt-12 pt-12 border-t border-secondary/10">
             <livewire:settings.delete-user-form />
         </div>
     </x-settings.layout>

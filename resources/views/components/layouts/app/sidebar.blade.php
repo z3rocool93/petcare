@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 @php
+    // RF9: Obtenemos la suscripción solo si el usuario está autenticado
     $userSubscription = null;
     if (auth()->check()) {
         $userSubscription = app(Kreait\Firebase\Contract\Database::class)
@@ -14,7 +15,7 @@
         default => 'bg-zinc-100 text-zinc-600 border-zinc-200',
     };
 @endphp
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     @include('partials.head')
     <link rel="manifest" href="{{ asset('manifest.json') }}">
@@ -30,7 +31,7 @@
     </script>
 </head>
 <body class="min-h-screen bg-brand-bone dark:bg-zinc-800">
-<flux:sidebar sticky stashable class="border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
+<flux:sidebar sticky stashable class="border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-primary-200">
     <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
     <a href="{{ route('home') }}" class="flex items-center gap-3 px-2 py-4" wire:navigate>
@@ -38,34 +39,72 @@
         <span class="text-xl font-black tracking-tight dark:text-white">Pet<span class="text-primary-700">Care</span></span>
     </a>
 
-    <flux:navlist variant="outline">
-        <flux:navlist.group :heading="__('Plataforma')" class="grid">
-            {{-- Rutas que requieren Login --}}
+    <flux:navlist variant="outline" class="space-y-1">
+        {{-- Grupo Plataforma --}}
+        <flux:navlist.group :heading="__('Plataforma')" class="grid !text-secondary/40 !font-black !text-[10px] uppercase tracking-widest mb-2 px-2">
             @auth
-                <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
+                <flux:navlist.item
+                    icon="home"
+                    :href="route('dashboard')"
+                    :current="request()->routeIs('dashboard')"
+                    wire:navigate
+                    class="rounded-xl !text-secondary hover:!bg-primary-50 hover:!text-primary-700 data-[current]:!bg-primary-600 data-[current]:!text-white transition-all duration-200"
+                >
                     {{ __('Inicio') }}
                 </flux:navlist.item>
             @endauth
 
-            {{-- RUTAS PÚBLICAS (Siempre visibles) --}}
-            <flux:navlist.item icon="map-pin" href="{{ route('veterinarias.index') }}" :current="request()->routeIs('veterinarias.index')" wire:navigate>
+            <flux:navlist.item
+                icon="map-pin"
+                href="{{ route('veterinarias.index') }}"
+                :current="request()->routeIs('veterinarias.index')"
+                wire:navigate
+                class="rounded-xl !text-secondary hover:!bg-primary-50 hover:!text-primary-700 data-[current]:!bg-primary-600 data-[current]:!text-white transition-all"
+            >
                 Veterinarias
             </flux:navlist.item>
-            <flux:navlist.item icon="credit-card" :href="route('membership.index')" :current="request()->routeIs('membership.index')" wire:navigate>
+
+            <flux:navlist.item
+                icon="credit-card"
+                :href="route('membership.index')"
+                :current="request()->routeIs('membership.index')"
+                wire:navigate
+                class="rounded-xl !text-secondary hover:!bg-primary-50 hover:!text-primary-700 data-[current]:!bg-primary-600 data-[current]:!text-white transition-all"
+            >
                 {{ __('Planes') }}
             </flux:navlist.item>
-
         </flux:navlist.group>
 
         @auth
-            <flux:navlist.group :heading="__('Gestión')" class="grid mt-4">
-                <flux:navlist.item icon="identification" href="/mascotas" :current="request()->is('mascotas*')" wire:navigate>
+            {{-- Grupo Gestión --}}
+            <flux:navlist.group :heading="__('Gestión')" class="grid mt-6 !text-secondary/40 !font-black !text-[10px] uppercase tracking-widest mb-2 px-2">
+                <flux:navlist.item
+                    icon="identification"
+                    href="/mascotas"
+                    :current="request()->is('mascotas*')"
+                    wire:navigate
+                    class="rounded-xl !text-secondary hover:!bg-primary-50 hover:!text-primary-700 data-[current]:!bg-primary-600 data-[current]:!text-white transition-all"
+                >
                     {{ __('Mis Mascotas') }}
                 </flux:navlist.item>
-                <flux:navlist.item icon="calendar" :href="route('appointments.index')" :current="request()->routeIs('appointments.index')" wire:navigate>
+
+                <flux:navlist.item
+                    icon="calendar"
+                    :href="route('appointments.index')"
+                    :current="request()->routeIs('appointments.index')"
+                    wire:navigate
+                    class="rounded-xl !text-secondary hover:!bg-primary-50 hover:!text-primary-700 data-[current]:!bg-primary-600 data-[current]:!text-white transition-all"
+                >
                     {{ __('Agenda Médica') }}
                 </flux:navlist.item>
-                <flux:navlist.item icon="chat-bubble-left-right" :href="route('consultations')" :current="request()->routeIs('consultations')" wire:navigate>
+
+                <flux:navlist.item
+                    icon="chat-bubble-left-right"
+                    :href="route('consultations')"
+                    :current="request()->routeIs('consultations')"
+                    wire:navigate
+                    class="rounded-xl !text-secondary hover:!bg-primary-50 hover:!text-primary-700 data-[current]:!bg-primary-600 data-[current]:!text-white transition-all"
+                >
                     {{ __('Consultas Vet') }}
                 </flux:navlist.item>
             </flux:navlist.group>

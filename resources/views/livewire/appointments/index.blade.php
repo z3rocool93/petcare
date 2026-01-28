@@ -129,7 +129,7 @@ $deleteAppointment = function (Database $database, $id) {
 <div class="p-6 max-w-5xl mx-auto" x-data="{ confirmingCancel: null }">
     <div class="flex justify-between items-end mb-8">
         <div>
-            <h2 class="text-3xl font-black text-zinc-900 dark:text-white tracking-tight">Agenda Médica</h2>
+            <h2 class="text-3xl font-black text-zinc-900 dark:text-secondary-light tracking-tight">Agenda Médica</h2>
             <p class="text-zinc-500">Horarios inteligentes por especialista.</p>
         </div>
         <button onclick="document.getElementById('modal-appt').showModal()"
@@ -141,7 +141,7 @@ $deleteAppointment = function (Database $database, $id) {
     <div class="space-y-4">
         @forelse($this->sortedAppointments as $appt)
             <div wire:key="{{ $appt['id'] }}"
-                 class="bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 p-5 rounded-3xl flex items-center justify-between shadow-sm relative overflow-hidden group">
+                 class="bg-white dark:bg-secondary-light border border-zinc-100 dark:border-zinc-800 p-5 rounded-3xl flex items-center justify-between shadow-sm relative overflow-hidden group">
 
                 <div class="flex items-center gap-6">
                     <div class="bg-primary-50 dark:bg-primary-900/20 p-3 rounded-2xl text-center min-w-[80px]">
@@ -198,7 +198,7 @@ $deleteAppointment = function (Database $database, $id) {
     <dialog wire:ignore.self id="modal-appt"
             x-on:close-modal-appt.window="document.getElementById('modal-appt').close()"
             class="modal p-0 rounded-3xl shadow-2xl backdrop:bg-zinc-900/60">
-        <div class="bg-white dark:bg-zinc-800 w-full max-w-md p-8">
+        <div class="bg-white dark:bg-secondary-light w-full max-w-md p-8">
 
             <h3 class="text-2xl font-bold mb-6 dark:text-white">Agendar Nueva Cita</h3>
 

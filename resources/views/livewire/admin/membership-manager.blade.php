@@ -45,14 +45,14 @@ $updatePlan = function (Database $database, $planId) {
 <div class="p-6 space-y-6">
     <div class="flex justify-between items-end">
         <div>
-            <h2 class="text-3xl font-black dark:text-white">Gestión de Membresías</h2>
+            <h2 class="text-3xl font-black dark:text-secondary-light">Gestión de Membresías</h2>
             <p class="text-zinc-500 text-sm">Configuración global de niveles y límites de PetCare</p>
         </div>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         @foreach($plans as $id => $plan)
-            <div wire:key="plan-{{ $id }}" class="bg-white dark:bg-zinc-900 p-6 rounded-3xl border border-zinc-200 dark:border-zinc-800 shadow-sm">
+            <div wire:key="plan-{{ $id }}" class="bg-white dark:bg-secondary-light p-6 rounded-3xl border border-zinc-200 dark:border-zinc-800 shadow-sm">
                 <div class="flex justify-between items-center mb-6">
                     {{-- Usamos el color dinámico que viene de Firebase --}}
                     <span class="text-[10px] font-black uppercase px-3 py-1 bg-{{ $plan['color'] ?? 'blue' }}-100 text-{{ $plan['color'] ?? 'blue' }}-600 rounded-full">
@@ -62,16 +62,19 @@ $updatePlan = function (Database $database, $planId) {
 
                 {{-- Cambiamos la forma de pasar los datos para que sea más limpia --}}
                 <form wire:submit.prevent="updatePlan('{{ $id }}')" class="space-y-4">
+                    {{-- RF1: Nombre del Nivel --}}
                     <flux:input wire:model="plans.{{ $id }}.name" label="Nombre del Plan" />
 
+                    {{-- RF3: Precio --}}
                     <div class="grid grid-cols-1 gap-2">
                         <flux:input wire:model="plans.{{ $id }}.price" type="number" label="Precio ($)" prefix="CLP" />
                     </div>
 
+                    {{-- RF2: Funcionalidades (Límite de mascotas) --}}
                     <flux:input wire:model="plans.{{ $id }}.limit_pets" type="number" label="Límite de Mascotas" placeholder="Ej: 3, 5, 999" />
 
                     <div class="pt-4">
-                        <flux:button type="submit" variant="primary" class="w-full !bg-blue-600 hover:!bg-blue-700 font-bold">
+                        <flux:button type="submit" variant="primary" class="w-full !bg-secondary !text-zinc-300 hover:!bg-primary-700 hover:!text-white font-bold">
                             Guardar Cambios
                         </flux:button>
                     </div>

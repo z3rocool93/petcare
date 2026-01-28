@@ -6,6 +6,7 @@ use Livewire\Attributes\Computed;
 new class extends Component {
     public string $busqueda = '';
 
+    // RF3: Lista de veterinarias (Datos para la entrega en UFRO)
     #[Computed]
     public function listaVets()
     {
@@ -48,6 +49,7 @@ new class extends Component {
         }));
     }
 
+    // RF2: Notificamos al mapa cuando cambian los resultados
     public function updatedBusqueda()
     {
         $this->dispatch('vets-filtradas', vets: $this->listaVets);
@@ -60,7 +62,7 @@ new class extends Component {
     class="space-y-6"
 >
     <header>
-        <h2 class="text-2xl font-black text-zinc-900 dark:text-white uppercase tracking-tight">Veterinarias Cercanas</h2>
+        <h2 class="text-2xl font-black text-zinc-900 dark:text-secondary-light uppercase tracking-tight">Veterinarias Cercanas</h2>
         <p class="text-zinc-500 text-sm italic">Atención para el proyecto PetCare - Buenos Aires, Argentina.</p>
     </header>
 
@@ -75,15 +77,16 @@ new class extends Component {
     {{-- Layout Responsivo --}}
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:h-[600px]">
 
+        {{-- LISTA DE RESULTADOS (RF3) --}}
         {{-- order-2: En mobile pasa abajo del mapa / h-[400px]: Altura fija en mobile --}}
         <div class="order-2 lg:order-1 lg:col-span-1 h-[400px] lg:h-full space-y-4 overflow-y-auto pr-2 custom-scrollbar">
             @forelse($this->listaVets as $vet)
                 <div
                     x-on:click="centrarEn({{ $vet['lat'] }}, {{ $vet['lng'] }})"
-                    class="p-5 bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 rounded-[2rem] hover:border-primary-300 transition-all cursor-pointer group shadow-sm"
+                    class="p-5 bg-white dark:bg-secondary-light border border-zinc-100 dark:border-zinc-800 rounded-[2rem] hover:border-b-secondary transition-all cursor-pointer group shadow-sm"
                 >
                     <div class="flex justify-between items-start mb-2">
-                        <h4 class="font-black text-zinc-900 dark:text-white uppercase text-sm group-hover:text-primary-500 transition">
+                        <h4 class="font-black text-zinc-900 dark:text-zinc-300 uppercase text-sm group-hover:text-primary-500 transition">
                             {{ $vet['nombre'] }}
                         </h4>
                     </div>
@@ -102,6 +105,7 @@ new class extends Component {
             @endforelse
         </div>
 
+        {{-- CONTENEDOR DEL MAPA (RF1) --}}
         {{-- order-1: En mobile aparece primero / h-[350px]: Evita que se vea como una franja --}}
         <div class="order-1 lg:order-2 lg:col-span-2 h-[350px] lg:h-full rounded-[2.5rem] overflow-hidden border border-zinc-100 dark:border-zinc-800 shadow-inner" wire:ignore>
             <div id="map" class="h-full w-full z-0"></div>

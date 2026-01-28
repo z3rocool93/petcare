@@ -34,6 +34,7 @@ mount(function (Database $database) use ($fetchPets) {
     $uid = auth()->id();
     $this->userSub = $database->getReference("user_subscriptions/$uid")->getValue();
 
+    // RF2: Cargamos la configuración maestra de planes
     $this->plansConfig = $database->getReference('membership_plans')->getValue() ?? [];
 
     $response = Http::get('https://dog.ceo/api/breeds/list/all');
@@ -159,11 +160,11 @@ $deletePet = function (Database $database, $id) use ($fetchPets) {
 
     <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
         <div>
-            <h2 class="text-3xl font-black text-gray-900 dark:text-white">Mis Mascotas</h2>
+            <h2 class="text-3xl font-black text-gray-900 dark:text-secondary">Mis Mascotas</h2>
         </div>
         <div class="flex w-full md:w-auto gap-3 items-center">
             <div class="text-right hidden sm:block mr-2">
-                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Capacidad</p>
+                <p class="text-[10px] font-bold text-secondary uppercase tracking-widest">Capacidad</p>
                 <p class="text-xs font-bold text-gray-600 dark:text-gray-300">
                     @php
                         $pId = $this->userSub['plan_id'] ?? 'basic';
@@ -186,7 +187,7 @@ $deletePet = function (Database $database, $id) use ($fetchPets) {
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         @forelse($this->filteredPets as $id => $pet)
-            <div wire:key="pet-{{ $id }}" class="bg-white dark:bg-gray-800 rounded-3xl p-5 border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-xl transition-all relative">
+            <div wire:key="pet-{{ $id }}" class="bg-white dark:bg-secondary-light rounded-3xl p-5 border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-xl transition-all relative">
                 <div class="flex flex-col items-center text-center">
                     <div class="w-20 h-20 rounded-2xl bg-gray-50 dark:bg-gray-700 flex items-center justify-center text-4xl mb-4">
                         {{ $pet['Especie'] === 'Perro' ? '🐶' : ($pet['Especie'] === 'Gato' ? '🐱' : '🐾') }}
