@@ -19,7 +19,7 @@
 <head>
     @include('partials.head')
     <link rel="manifest" href="{{ asset('manifest.json') }}">
-    <meta name="theme-color" content="#3b82f6">
+    <meta name="theme-color" content="#f26419">
     <link rel="apple-touch-icon" href="{{ asset('img/icons/icon-192x192.png') }}">
     <script>
         // Si no hay tema guardado, usamos 'light' por defecto (ignorando la preferencia del sistema para el primer inicio)
