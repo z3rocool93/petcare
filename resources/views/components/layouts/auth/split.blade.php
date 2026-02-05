@@ -3,7 +3,7 @@
     <head>
         @include('partials.head')
         <script>
-            // Forzamos el modo oscuro como el único modo disponible
+            // Forzamos el modo claro como el único modo disponible
             document.documentElement.classList.add('dark')
             localStorage.theme = 'dark'
         </script>

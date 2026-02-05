@@ -22,7 +22,7 @@
     <meta name="theme-color" content="#f26419">
     <link rel="apple-touch-icon" href="{{ asset('img/icons/icon-192x192.png') }}">
     <script>
-        // Forzamos el modo oscuro como el único modo disponible
+        // Forzamos el modo claro como el único modo disponible
         document.documentElement.classList.add('dark')
         localStorage.theme = 'dark'
     </script>

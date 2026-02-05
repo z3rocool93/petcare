@@ -8,7 +8,7 @@
     <meta name="theme-color" content="#f26419"> {{-- Actualizado al naranja primary-600 --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
-    {{-- Eliminado el script de detección de Dark Mode para forzar Light Mode siempre --}}
+    {{-- Eliminado el script de detección de tema para forzar Modo Claro siempre --}}
 </head>
 <body class="bg-brand-cream flex flex-col min-h-screen" x-data="{ mobileMenuOpen: false }">
 
