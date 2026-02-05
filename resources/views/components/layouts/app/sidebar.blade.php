@@ -23,8 +23,8 @@
     <link rel="apple-touch-icon" href="{{ asset('img/icons/icon-192x192.png') }}">
     <script>
         // Forzamos el modo claro como el único modo disponible
-        document.documentElement.classList.add('dark')
-        localStorage.theme = 'dark'
+        document.documentElement.classList.add('light')
+        localStorage.theme = 'light'
     </script>
 </head>
 <body class="min-h-screen bg-brand-bone dark:bg-zinc-800">
