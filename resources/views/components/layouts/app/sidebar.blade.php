@@ -22,12 +22,9 @@
     <meta name="theme-color" content="#f26419">
     <link rel="apple-touch-icon" href="{{ asset('img/icons/icon-192x192.png') }}">
     <script>
-        // Si no hay tema guardado, usamos 'light' por defecto (ignorando la preferencia del sistema para el primer inicio)
-        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && false)) {
-            document.documentElement.classList.add('dark')
-        } else {
-            document.documentElement.classList.remove('dark')
-        }
+        // Forzamos el modo oscuro como el único modo disponible
+        document.documentElement.classList.add('dark')
+        localStorage.theme = 'dark'
     </script>
 </head>
 <body class="min-h-screen bg-brand-bone dark:bg-zinc-800">
