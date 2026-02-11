@@ -7,12 +7,12 @@
 @source '../../vendor/livewire/flux-pro/stubs/**/*.blade.php';
 @source '../../vendor/livewire/flux/stubs/**/*.blade.php';
 
-@custom-variant dark (&:where(.dark, .dark *));
+/* Eliminamos el custom-variant dark para evitar conflictos */
 
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 
-    /* Nueva Paleta de Colores - Migrada de tailwind.config.js */
+    /* Nueva Paleta de Colores */
     --color-primary-50: #fff7ed;
     --color-primary-100: #ffedd5;
     --color-primary-200: #fed7aa;
@@ -32,6 +32,7 @@
     --color-brand-cream: #f2ede4;
     --color-brand-bone: #faf9f6;
 
+    /* Ajuste de Zinc: Usamos el tono que te gustaba del modo oscuro para mayor contraste */
     --color-zinc-50: #fafafa;
     --color-zinc-100: #f5f5f5;
     --color-zinc-200: #e5e5e5;
@@ -40,48 +41,59 @@
     --color-zinc-500: #737373;
     --color-zinc-600: #525252;
     --color-zinc-700: #404040;
-    --color-zinc-800: #ffedd5;
+    --color-zinc-800: #132c33; /* Ahora apunta a tu petróleo para mantener consistencia */
     --color-zinc-900: #171717;
     --color-zinc-950: #0a0a0a;
 
-    --color-accent: var(--color-neutral-800);
-    --color-accent-content: var(--color-neutral-800);
-    --color-accent-foreground: var(--color-white);
+    /* CONFIGURACIÓN UNIFICADA: Movimos los valores de .dark aquí */
+    --color-accent: var(--color-white);
+    --color-accent-content: var(--color-secondary); /* Texto oscuro sobre fondo claro (o viceversa) */
+    --color-accent-foreground: var(--color-primary-600);
 }
 
-@layer theme {
-    .dark {
-        --color-accent: var(--color-white);
-        --color-accent-content: var(--color-white);
-        --color-accent-foreground: var(--color-neutral-800);
-    }
-}
+/* Eliminamos toda la capa @layer theme .dark { ... } ya que no se usará */
 
 @layer base {
-
     *,
     ::after,
     ::before,
     ::backdrop,
     ::file-selector-button {
-        border-color: var(--color-gray-200, currentColor);
+        /* Usamos el petróleo con opacidad para los bordes, da un look más premium que el gris */
+        border-color: color-mix(in srgb, var(--color-secondary) 10%, transparent);
+    }
+
+    body {
+        /* Forzamos el fondo y color de texto global para que no dependa de clases */
+        @apply bg-brand-cream text-secondary antialiased;
     }
 }
 
+/* Optimizaciones para Flux */
 [data-flux-field]:not(ui-radio, ui-checkbox) {
     @apply grid gap-2;
 }
 
 [data-flux-label] {
-    @apply  !mb-0 !leading-tight;
+    /* Labels en petróleo fuerte para que se vean como en el dark mode */
+    @apply !mb-0 !leading-tight !text-secondary font-bold uppercase text-[10px] tracking-widest;
+}
+
+/* Inputs con el "Glow" Naranja que definimos antes */
+input[data-flux-control],
+textarea[data-flux-control],
+select[data-flux-control] {
+    @apply transition-all duration-200;
 }
 
 input:focus[data-flux-control],
 textarea:focus[data-flux-control],
 select:focus[data-flux-control] {
-    @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
+    /* El anillo ahora es el naranja PetCare */
+    @apply outline-hidden ring-2 ring-primary-600/50 ring-offset-2 ring-offset-brand-cream;
 }
 
-/* \[:where(&)\]:size-4 {
-    @apply size-4;
-} */
+/* Estilo para los botones Flux para que usen la nueva paleta */
+[data-flux-button] {
+    @apply font-bold rounded-xl transition-transform active:scale-95;
+}
