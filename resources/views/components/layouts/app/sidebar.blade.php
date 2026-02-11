@@ -21,13 +21,8 @@
     <link rel="manifest" href="{{ asset('manifest.json') }}">
     <meta name="theme-color" content="#f26419">
     <link rel="apple-touch-icon" href="{{ asset('img/icons/icon-192x192.png') }}">
-    <script>
-        // Forzamos el modo claro como el único modo disponible
-        document.documentElement.classList.add('light')
-        localStorage.theme = 'light'
-    </script>
 </head>
-<body class="min-h-screen bg-brand-bone dark:bg-zinc-800">
+<body class="min-h-screen bg-brand-bone">
 <flux:sidebar sticky stashable class="border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-primary-200">
     <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
